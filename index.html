@@ -4,125 +4,210 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Englannin sanasto</title>
+<title>Sanastomaailma – sanojen tutkimusmatka</title>
 <style>
+:root{
+  --ink:#233d53;--blue:#467eb5;--cream:#fffaf0;
+  --green:#71936d;--gold:#e9b96e;--line:#e8e2d5;
+}
 *{box-sizing:border-box}
-body{font-family:Arial,sans-serif;max-width:820px;margin:auto;padding:20px;background:#f3f5f8;color:#222}
-h1{margin-top:0}
-.panel{background:white;padding:20px;margin-bottom:20px;border-radius:12px;box-shadow:0 3px 10px rgba(0,0,0,.06)}
-label{display:block;margin-bottom:6px}
-input{display:block;width:100%;padding:11px;margin:8px 0 14px;border:1px solid #ccc;border-radius:7px;font:inherit}
-button{padding:11px 14px;border:0;border-radius:7px;background:#2858bd;color:white;font:inherit;font-weight:bold;cursor:pointer}
-button:hover{filter:brightness(.94)}
-button:disabled{opacity:.5;cursor:not-allowed}
-.boxes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.box-card{padding:15px;border:2px solid #ddd;border-radius:10px;min-width:0}
-.box-card.selected{border-color:#2858bd;box-shadow:0 0 0 2px rgba(40,88,189,.12)}
-.box-card h3{margin:0 0 6px}
-.box-count{margin-bottom:12px;color:#555;font-size:14px}
-.box-card button{width:100%}
-.box-1{background:#eef4ff}
-.box-2{background:#eaf6ed}
-.box-3{background:#fff3df}
-.box-4{background:#f3eaff}
-.muted{color:#667085;font-size:14px}
-.quiz-word{margin:22px 0;font-size:30px;font-weight:bold;overflow-wrap:anywhere}
-.feedback{margin:15px 0;padding:12px;border-radius:8px;white-space:pre-line}
-.feedback.correct{background:#e4f6e9;color:#176534}
-.feedback.incorrect{background:#fde8e7;color:#a21c16}
+body{
+  margin:0 auto;padding:20px;max-width:1050px;
+  font-family:Georgia,"Times New Roman",serif;color:var(--ink);
+  background:linear-gradient(#eaf4fb,#f8f4e9 420px,#f8f4e9);
+}
+button,input{font:inherit}
+button{
+  border:0;border-radius:14px;padding:12px 17px;
+  background:var(--blue);color:white;font-weight:bold;cursor:pointer;
+  box-shadow:0 3px 0 #315d88;transition:transform .15s,filter .15s;
+}
+button:hover{filter:brightness(1.06);transform:translateY(-1px)}
+button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+input{
+  display:block;width:100%;padding:13px;margin:8px 0 16px;
+  border:1px solid #d8d9d1;border-radius:12px;background:#fffefb;
+  color:var(--ink);font-family:Arial,sans-serif;font-size:16px;
+}
+h1,h2,h3,p{overflow-wrap:anywhere}
+h1{font-size:clamp(30px,5vw,49px);margin:0}
+h2{margin-top:0;font-size:25px}
+h3{margin-top:0}
+.subtitle{margin:8px 0 0;font-size:17px;color:#526f80}
+.hero{
+  position:relative;overflow:hidden;padding:30px 28px 25px;
+  border:1px solid #d6e2d9;border-radius:24px;
+  background:linear-gradient(180deg,#b9ddf0 0%,#e9f4ed 60%,#b8d3a1 61%,#76996f 100%);
+  box-shadow:0 7px 0 rgba(61,91,77,.10);
+}
+.hero-content{position:relative;z-index:2;max-width:580px}
+.hero p{font-family:Arial,sans-serif;line-height:1.55}
+.hero-art{font-size:clamp(45px,9vw,90px);letter-spacing:5px;margin-top:15px;line-height:1.3}
+.hero-art span{display:inline-block;filter:drop-shadow(0 4px 2px #536c5733)}
+.hero-tag{
+  display:inline-block;background:#fff8df;border:1px solid #e7c985;
+  padding:7px 12px;border-radius:20px;font-size:13px;font-weight:bold;
+  margin-bottom:12px;
+}
+.tabs{
+  display:flex;gap:10px;margin:20px 0;padding:7px;
+  border-radius:17px;background:#e4e9e2;border:1px solid #d8e0d5;
+}
+.tab-button{flex:1;background:transparent;color:var(--ink);box-shadow:none}
+.tab-button.active{background:#fffdf7;color:#315f87;box-shadow:0 2px 5px #344d3315;border:1px solid #e3dfd3}
+.panel{
+  background:rgba(255,253,247,.96);border:1px solid var(--line);
+  padding:23px;margin-bottom:20px;border-radius:20px;
+  box-shadow:0 5px 15px rgba(69,76,55,.06);
+}
+.panel p{font-family:Arial,sans-serif;line-height:1.55}
+label{font-family:Arial,sans-serif;font-weight:bold}
+.boxes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.box-card{
+  padding:18px;border:2px solid #d9e0d2;border-radius:17px;
+  min-width:0;position:relative;overflow:hidden;
+}
+.box-card.selected{border-color:#477eae;box-shadow:0 0 0 3px #477eae20}
+.box-card h3{font-size:21px;margin:0 0 6px}
+.box-card p{margin:8px 0 14px;font-size:14px}
+.box-card button{width:100%;font-family:Arial,sans-serif}
+.box-1{background:linear-gradient(145deg,#edf7fc,#d7eaf5)}
+.box-2{background:linear-gradient(145deg,#f0f5e6,#dbe8c9)}
+.box-3{background:linear-gradient(145deg,#fff2d9,#f2ddb0)}
+.box-4{background:linear-gradient(145deg,#f4eefa,#e2d7f0)}
+.box-art{font-size:35px;margin:5px 0 9px}
+.box-count{font-weight:bold;color:#496477}
+.muted{color:#6c7c82;font:14px Arial,sans-serif}
+.quiz-word{margin:22px 0;font-size:clamp(27px,5vw,36px);font-weight:bold;text-align:center}
+.feedback{margin:15px 0;padding:15px;border-radius:13px;white-space:pre-line;font-family:Arial,sans-serif}
+.feedback.correct{background:#e8f4df;color:#315e3a}
+.feedback.incorrect{background:#fff0e2;color:#8b4b30}
 .hidden{display:none!important}
 .word-list{list-style:none;padding:0;margin:0}
-.word-list li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #eee}
+.word-list li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #eee8dc;font-family:Arial,sans-serif}
 .word-text{overflow-wrap:anywhere;min-width:0}
-.delete-button{background:#b42318;padding:7px 10px;font-size:13px;flex-shrink:0}
+.delete-button{background:#ad5145;box-shadow:0 3px 0 #79392f;padding:8px 11px;font-size:13px;flex-shrink:0}
 .button-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
 .button-row button{flex:1}
-.tabs{display:flex;gap:10px;margin:18px 0 20px;padding:6px;background:#e7ebf2;border-radius:12px}
-.tab-button{flex:1;background:transparent;color:#344054;border:2px solid transparent}
-.tab-button.active{background:white;color:#2858bd;border-color:#2858bd}
-@media(max-width:520px){body{padding:12px}.panel{padding:15px}.boxes{grid-template-columns:1fr}}
+.section-intro{color:#6c7c82}
+.footer-note{text-align:center;color:#73847b;font:13px Arial,sans-serif;padding:5px 10px 18px}
+@media(max-width:560px){
+  body{padding:12px}
+  .hero{padding:22px 18px}
+  .panel{padding:17px}
+  .boxes{grid-template-columns:1fr}
+  .hero-art{letter-spacing:1px}
+}
 </style>
 </head>
 <body>
-<h1>Englannin sanasto</h1>
+
+<header class="hero">
+  <div class="hero-content">
+    <span class="hero-tag">✦ PIENIÄ ASKELEITA, SUURIA MAHDOLLISUUKSIA ✦</span>
+    <h1>🌍 Sanastomaailma</h1>
+    <p class="subtitle">Sanoja. Matkoja. Mahdollisuuksia.</p>
+    <p>Lähde omalle tutkimusmatkallesi. Jokainen opittu sana vie sinut hieman pidemmälle.</p>
+    <div class="hero-art" aria-label="Satumaailman maisema">
+      <span>☁️</span><span>🏔️</span><span>🌲</span><span>🏡</span><span>🌿</span>
+    </div>
+  </div>
+</header>
 
 <nav class="tabs" aria-label="Sovelluksen välilehdet">
-<button type="button" id="practiceTabButton" class="tab-button active" aria-selected="true">Harjoittele</button>
-<button type="button" id="vocabularyTabButton" class="tab-button" aria-selected="false">Sanastolokerot</button>
+  <button type="button" id="practiceTabButton" class="tab-button active" aria-selected="true">🧭 Harjoittele</button>
+  <button type="button" id="vocabularyTabButton" class="tab-button" aria-selected="false">📚 Sanastolokerot</button>
 </nav>
 
 <div id="practiceTabContent">
+
 <section class="panel">
-<h2>Lisää uusi sana</h2>
-<form id="wordForm">
-<label for="englishInput">Englanniksi</label>
-<input id="englishInput" type="text" placeholder="Kirjoita englanninkielinen sana" required>
-<label for="finnishInput">Suomeksi</label>
-<input id="finnishInput" type="text" placeholder="Kirjoita suomenkielinen käännös" required>
-<button type="submit">Lisää sana lokeroon 1</button>
-</form>
-<p id="storageMessage" class="muted" aria-live="polite">Sanasto tallennetaan selaimeen automaattisesti.</p>
+  <h2>🌱 Lisää sanoja matkallesi</h2>
+  <p class="section-intro">Jokainen uusi sana aloittaa matkansa Sanasaarelta, lokerosta 1.</p>
+  <form id="wordForm">
+    <label for="englishInput">Englanniksi</label>
+    <input id="englishInput" type="text" placeholder="Kirjoita englanninkielinen sana" required>
+    <label for="finnishInput">Suomeksi</label>
+    <input id="finnishInput" type="text" placeholder="Kirjoita suomenkielinen käännös" required>
+    <button type="submit">＋ Lisää sana lokeroon 1</button>
+  </form>
+  <p id="storageMessage" class="muted" aria-live="polite">Sanasto tallennetaan selaimeen automaattisesti.</p>
 </section>
 
 <section class="panel">
-<h2>Sanastolokerot</h2>
-<p>Valitse laatikko, jonka sanoja haluat harjoitella.</p>
-<div class="boxes">
-<div class="box-card box-1" id="boxCard1">
-<h3>Lokero 1</h3><div class="box-count" id="count1">0 sanaa</div>
-<button type="button" data-box="1">Harjoittele lokeroa 1</button>
-</div>
-<div class="box-card box-2" id="boxCard2">
-<h3>Lokero 2</h3><div class="box-count" id="count2">0 sanaa</div>
-<button type="button" data-box="2">Harjoittele lokeroa 2</button>
-</div>
-<div class="box-card box-3" id="boxCard3">
-<h3>Lokero 3</h3><div class="box-count" id="count3">0 sanaa</div>
-<button type="button" data-box="3">Harjoittele lokeroa 3</button>
-</div>
-<div class="box-card box-4" id="boxCard4">
-<h3>Opitut</h3><div class="box-count" id="count4">0 sanaa</div>
-<button type="button" data-box="4">Kertaa opittuja</button>
-</div>
-</div>
-<p id="selectedBoxMessage" aria-live="polite">Valitse harjoiteltava lokero yllä olevista laatikoista.</p>
+  <h2>🗺️ Valitse seuraava etappi</h2>
+  <p class="section-intro">Valitse alue, jonka sanoja haluat harjoitella.</p>
+  <div class="boxes">
+    <div class="box-card box-1" id="boxCard1">
+      <div class="box-art">🏝️</div>
+      <h3>Sanasaari</h3>
+      <div class="box-count" id="count1">0 sanaa</div>
+      <p>Uudet sanat lähtevät matkaan täältä.</p>
+      <button type="button" data-box="1">Tutki Sanasaarta</button>
+    </div>
+    <div class="box-card box-2" id="boxCard2">
+      <div class="box-art">🌳</div>
+      <h3>Harjoittelulaakso</h3>
+      <div class="box-count" id="count2">0 sanaa</div>
+      <p>Harjoittele ja vahvista muistiasi.</p>
+      <button type="button" data-box="2">Mene laaksoon</button>
+    </div>
+    <div class="box-card box-3" id="boxCard3">
+      <div class="box-art">⛰️</div>
+      <h3>Oivallusten vuori</h3>
+      <div class="box-count" id="count3">0 sanaa</div>
+      <p>Olet jo lähellä sanojen hallintaa.</p>
+      <button type="button" data-box="3">Kiipeä vuorelle</button>
+    </div>
+    <div class="box-card box-4" id="boxCard4">
+      <div class="box-art">🏰</div>
+      <h3>Tähtitorni · Opitut</h3>
+      <div class="box-count" id="count4">0 sanaa</div>
+      <p>Katso, kuinka pitkälle olet päässyt.</p>
+      <button type="button" data-box="4">Vieraile tornissa</button>
+    </div>
+  </div>
+  <p id="selectedBoxMessage" aria-live="polite">Valitse etappi aloittaaksesi harjoittelun.</p>
 </section>
 
 <section class="panel hidden" id="practicePanel">
-<h2 id="practiceTitle">Harjoittelu</h2>
-<p id="quizInstructions"></p>
-<button id="startButton" type="button" disabled>Aloita harjoittelu</button>
-<div id="quizArea" class="hidden">
-<p id="questionProgress" class="muted"></p>
-<div id="questionWord" class="quiz-word"></div>
-<form id="answerForm">
-<label for="answerInput">Kirjoita englanninkielinen sana</label>
-<input id="answerInput" type="text" placeholder="Englanninkielinen vastaus" autocomplete="off" required>
-<button id="checkButton" type="submit">Tarkista vastaus</button>
-</form>
-<div id="feedback" class="feedback hidden" aria-live="polite"></div>
-<div class="button-row">
-<button id="nextButton" type="button" class="hidden">Seuraava sana</button>
-<button id="stopButton" type="button">Lopeta harjoittelu</button>
-</div>
-</div>
-<div id="resultArea" class="hidden">
-<h3>Harjoittelu päättyi</h3>
-<p id="resultText"></p>
-<button id="retryButton" type="button">Harjoittele uudelleen</button>
-</div>
+  <h2 id="practiceTitle">Harjoittelu</h2>
+  <p id="quizInstructions"></p>
+  <button id="startButton" type="button" disabled>▶ Aloita harjoittelu</button>
+  <div id="quizArea" class="hidden">
+    <p id="questionProgress" class="muted"></p>
+    <div id="questionWord" class="quiz-word"></div>
+    <form id="answerForm">
+      <label for="answerInput">Kirjoita englanninkielinen sana</label>
+      <input id="answerInput" type="text" placeholder="Englanninkielinen vastaus" autocomplete="off" required>
+      <button id="checkButton" type="submit">Tarkista vastaus</button>
+    </form>
+    <div id="feedback" class="feedback hidden" aria-live="polite"></div>
+    <div class="button-row">
+      <button id="nextButton" type="button" class="hidden">Seuraava sana →</button>
+      <button id="stopButton" type="button">Lopeta harjoittelu</button>
+    </div>
+  </div>
+  <div id="resultArea" class="hidden">
+    <h3>✨ Matka jatkuu!</h3>
+    <p id="resultText"></p>
+    <button id="retryButton" type="button">Harjoittele uudelleen</button>
+  </div>
 </section>
 </div>
 
 <div id="vocabularyTabContent" class="hidden">
 <section class="panel">
-<h2>Sanat lokeroittain</h2>
-<h3>Lokero 1</h3><ul id="list1" class="word-list"></ul>
-<h3>Lokero 2</h3><ul id="list2" class="word-list"></ul>
-<h3>Lokero 3</h3><ul id="list3" class="word-list"></ul>
-<h3>Opitut</h3><ul id="list4" class="word-list"></ul>
+  <h2>📚 Sanat lokeroittain</h2>
+  <p class="section-intro">Täältä näet kaikki matkallasi keräämäsi sanat.</p>
+  <h3>🏝️ Sanasaari · Lokero 1</h3><ul id="list1" class="word-list"></ul>
+  <h3>🌳 Harjoittelulaakso · Lokero 2</h3><ul id="list2" class="word-list"></ul>
+  <h3>⛰️ Oivallusten vuori · Lokero 3</h3><ul id="list3" class="word-list"></ul>
+  <h3>🏰 Tähtitorni · Opitut</h3><ul id="list4" class="word-list"></ul>
 </section>
 </div>
+
+<div class="footer-note">Jokainen sana on askel eteenpäin. 🌿</div>
 
 <script>
 "use strict";
@@ -146,10 +231,10 @@ function createId() {
 function saveWords() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(words));
-    $("storageMessage").textContent = "Sanasto tallennettu selaimeen.";
+    $("storageMessage").textContent = "✨ Sanastosi on tallennettu.";
     return true;
   } catch (error) {
-    $("storageMessage").textContent = "Tallennus epäonnistui. Selaimen tallennustila ei ehkä ole käytettävissä.";
+    $("storageMessage").textContent = "Tallennus epäonnistui. Tarkista selaimen tallennustila.";
     return false;
   }
 }
@@ -163,21 +248,21 @@ function loadWords() {
     words = parsed
       .filter(word => word && typeof word === "object")
       .map(word => {
-        const numericBox = Number(word.box);
+        const box = Number(word.box);
         return {
           id: word.id ? String(word.id) : createId(),
           english: String(word.english ?? "").trim(),
           finnish: String(word.finnish ?? "").trim(),
-          box: Number.isInteger(numericBox) && numericBox >= 1 && numericBox <= 4 ? numericBox : 1
+          box: Number.isInteger(box) && box >= 1 && box <= 4 ? box : 1
         };
       })
       .filter(word => word.english && word.finnish);
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(words));
-    $("storageMessage").textContent = "Sanasto tallennetaan tähän selaimeen automaattisesti.";
+    $("storageMessage").textContent = "Sanastosi tallentuu tähän selaimeen automaattisesti.";
   } catch (error) {
     words = [];
-    $("storageMessage").textContent = "Tallennettua sanastoa ei voitu lukea. Selaimen tallennustila tai sanastotiedot voivat olla virheellisiä.";
+    $("storageMessage").textContent = "Tallennettua sanastoa ei voitu lukea.";
   }
   renderAll();
 }
@@ -199,7 +284,7 @@ function renderWordLists() {
     if (boxWords.length === 0) {
       const item = document.createElement("li");
       item.className = "muted";
-      item.textContent = "Ei sanoja tässä lokerossa.";
+      item.textContent = "Tämä alue odottaa ensimmäisiä sanojaan.";
       list.appendChild(item);
       continue;
     }
@@ -224,18 +309,21 @@ function renderWordLists() {
 
 function updateSelectedBox() {
   if (selectedBox === null) {
-    $("selectedBoxMessage").textContent = "Valitse harjoiteltava lokero yllä olevista laatikoista.";
+    $("selectedBoxMessage").textContent = "Valitse etappi aloittaaksesi harjoittelun.";
     $("practicePanel").classList.add("hidden");
     return;
   }
 
   const count = words.filter(word => word.box === selectedBox).length;
-  const name = selectedBox === 4 ? "Opitut" : "Lokero " + selectedBox;
-  $("selectedBoxMessage").textContent = "Valittuna: " + name + ". Sanoja: " + count + ".";
-  $("practiceTitle").textContent = name + " – harjoittelu";
+  const names = {
+    1: "Sanasaari", 2: "Harjoittelulaakso",
+    3: "Oivallusten vuori", 4: "Tähtitorni · Opitut"
+  };
+  $("selectedBoxMessage").textContent = "Valittuna: " + names[selectedBox] + ". Sanoja: " + count + ".";
+  $("practiceTitle").textContent = "🧭 " + names[selectedBox];
   $("quizInstructions").textContent = count === 0
-    ? "Tässä lokerossa ei ole vielä sanoja."
-    : "Harjoittelet nyt: " + name + ". Sanoja: " + count + ".";
+    ? "Tällä etapilla ei ole vielä sanoja. Lisää uusia sanoja tai valitse toinen alue."
+    : "Olet valmis? Harjoitellaan tämän alueen sanoja rauhassa.";
   $("startButton").disabled = count === 0;
 }
 
@@ -264,6 +352,7 @@ function selectBox(box) {
   $("resultArea").classList.add("hidden");
   $("startButton").classList.remove("hidden");
   renderAll();
+  $("practicePanel").scrollIntoView({behavior:"smooth",block:"start"});
 }
 
 $("wordForm").addEventListener("submit", event => {
@@ -272,7 +361,7 @@ $("wordForm").addEventListener("submit", event => {
   const finnish = $("finnishInput").value.trim();
   if (!english || !finnish) return;
 
-  const newWord = { id: createId(), english, finnish, box: 1 };
+  const newWord = {id:createId(),english,finnish,box:1};
   words.push(newWord);
 
   if (!saveWords()) {
@@ -289,10 +378,10 @@ $("wordForm").addEventListener("submit", event => {
 function deleteWord(id) {
   const index = words.findIndex(word => word.id === id);
   if (index < 0) return;
-  const removed = words.splice(index, 1)[0];
+  const removed = words.splice(index,1)[0];
 
   if (!saveWords()) {
-    words.splice(index, 0, removed);
+    words.splice(index,0,removed);
     renderAll();
     return;
   }
@@ -303,9 +392,9 @@ function deleteWord(id) {
 
 function shuffle(array) {
   const result = [...array];
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [result[i], result[j]] = [result[j], result[i]];
+  for (let i=result.length-1;i>0;i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [result[i],result[j]] = [result[j],result[i]];
   }
   return result;
 }
@@ -313,7 +402,7 @@ function shuffle(array) {
 function startQuiz() {
   if (selectedBox === null) return;
   const selectedWords = words.filter(word => word.box === selectedBox);
-  if (selectedWords.length === 0) {
+  if (!selectedWords.length) {
     renderAll();
     return;
   }
@@ -346,7 +435,7 @@ function showQuestion() {
   }
 
   answered = false;
-  $("questionProgress").textContent = "Sana " + (quizIndex + 1) + " / " + quizQueue.length;
+  $("questionProgress").textContent = "Sana " + (quizIndex+1) + " / " + quizQueue.length;
   $("questionWord").textContent = currentWord.finnish;
   $("answerInput").value = "";
   $("answerInput").disabled = false;
@@ -370,18 +459,18 @@ function checkAnswer() {
   answered = true;
   totalAnswers++;
   const previousBox = currentWord.box;
-  const isCorrect = answer === currentWord.english.trim().toLocaleLowerCase("en");
+  const correct = answer === currentWord.english.trim().toLocaleLowerCase("en");
   const feedback = $("feedback");
   feedback.className = "feedback";
 
-  if (isCorrect) {
+  if (correct) {
     correctAnswers++;
     feedback.classList.add("correct");
-    feedback.textContent = "Oikein!\n" + currentWord.finnish + " = " + currentWord.english;
+    feedback.textContent = "✨ Hienoa! Oikein!\n" + currentWord.finnish + " = " + currentWord.english;
     if (currentWord.box >= 1 && currentWord.box <= 3) currentWord.box++;
   } else {
     feedback.classList.add("incorrect");
-    feedback.textContent = "Väärin.\nOikea vastaus: " + currentWord.english;
+    feedback.textContent = "Ei haittaa, harjoittelu auttaa!\nOikea vastaus: " + currentWord.english;
     if (currentWord.box === 3) currentWord.box = 2;
     else if (currentWord.box === 2) currentWord.box = 1;
   }
@@ -407,35 +496,34 @@ function finishQuiz() {
   $("quizArea").classList.add("hidden");
   $("resultArea").classList.remove("hidden");
   $("startButton").classList.remove("hidden");
-  const percent = totalAnswers ? Math.round(correctAnswers / totalAnswers * 100) : 0;
+  const percent = totalAnswers ? Math.round(correctAnswers/totalAnswers*100) : 0;
   $("resultText").textContent =
-    "Kysytyt sanat: " + totalAnswers +
-    ". Oikein: " + correctAnswers +
-    ". Oikeinprosentti: " + percent + "%.";
+    "Matka tältä erää valmis! Kysytyt sanat: " + totalAnswers +
+    ". Oikein: " + correctAnswers + ". Oikeinprosentti: " + percent + "%.";
   renderAll();
 }
 
-$("startButton").addEventListener("click", startQuiz);
-$("nextButton").addEventListener("click", nextQuestion);
-$("stopButton").addEventListener("click", () => stopQuiz());
-$("retryButton").addEventListener("click", startQuiz);
+$("startButton").addEventListener("click",startQuiz);
+$("nextButton").addEventListener("click",nextQuestion);
+$("stopButton").addEventListener("click",()=>stopQuiz());
+$("retryButton").addEventListener("click",startQuiz);
 
 document.querySelectorAll("[data-box]").forEach(button => {
-  button.addEventListener("click", () => selectBox(Number(button.dataset.box)));
+  button.addEventListener("click",()=>selectBox(Number(button.dataset.box)));
 });
 
 function showTab(tab) {
   const practiceActive = tab === "practice";
-  $("practiceTabContent").classList.toggle("hidden", !practiceActive);
-  $("vocabularyTabContent").classList.toggle("hidden", practiceActive);
-  $("practiceTabButton").classList.toggle("active", practiceActive);
-  $("vocabularyTabButton").classList.toggle("active", !practiceActive);
-  $("practiceTabButton").setAttribute("aria-selected", String(practiceActive));
-  $("vocabularyTabButton").setAttribute("aria-selected", String(!practiceActive));
+  $("practiceTabContent").classList.toggle("hidden",!practiceActive);
+  $("vocabularyTabContent").classList.toggle("hidden",practiceActive);
+  $("practiceTabButton").classList.toggle("active",practiceActive);
+  $("vocabularyTabButton").classList.toggle("active",!practiceActive);
+  $("practiceTabButton").setAttribute("aria-selected",String(practiceActive));
+  $("vocabularyTabButton").setAttribute("aria-selected",String(!practiceActive));
 }
 
-$("practiceTabButton").addEventListener("click", () => showTab("practice"));
-$("vocabularyTabButton").addEventListener("click", () => showTab("vocabulary"));
+$("practiceTabButton").addEventListener("click",()=>showTab("practice"));
+$("vocabularyTabButton").addEventListener("click",()=>showTab("vocabulary"));
 
 loadWords();
 </script>
