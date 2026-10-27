@@ -611,28 +611,6 @@ function checkAnswer() {
     } else {
       feedback.classList.add("incorrect");
       feedback.textContent =
-        "Väärin.\nOikea vastaus: " + currentWord.english;
-    }
-    $("answerInput").disabled = true;
-    $("checkButton").disabled = true;
-    $("nextButton").classList.remove("hidden");
-  }
-
-  answered = true;
-  totalAnswers++;
-
-  const feedback = $("feedback");
-  feedback.className = "feedback";
-
-  const previousBox = currentWord.box;
-  const isCorrect =
-    answer === currentWord.english.trim().toLowerCase();
-
-  if (isCorrect) {
-    correctAnswers++;
-    feedback.classList.add("correct");
-    feedback.textContent =
-      "Oikein!\n" + currentWord.finnish + " = " + currentWord.english;
 
     // Oikea vastaus siirtää sanan yhden lokeron eteenpäin.
     // Opitut-sanat pysyvät aina Opitut-lokerossa.
