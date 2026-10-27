@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
+<base href="https://mysteer1.github.io/sanastomaailma/">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sanastomaailma</title>
@@ -46,9 +47,10 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 }
 .tabs {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 6px;
-  width: 74%;
+  width: 250px;
+  max-width: 100%;
   margin: 0 0 12px;
   padding: 8px;
   background: rgba(255, 253, 247, .92);
@@ -221,17 +223,16 @@ input[type="text"] {
 }
 .practice-panel {
   margin-top: 16px;
-  display: block;
-  width: 100%;
-  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  align-items: center;
   scroll-margin-top: 12px;
 }
-.practice-heading {
-  display: none;
-}
-.practice-heading {
-  display: none;
-}
+.practice-heading { display: none !important; padding: 0; }
+.practice-heading h2 { font-size: 25px; }
+.practice-heading p { margin: 8px 0; color: #40536b; }
+
 .practice-art {
   width: 100%;
   aspect-ratio: 3.8 / 1;
@@ -241,7 +242,7 @@ input[type="text"] {
   border-radius: 18px;
   background-image: url("Satulaakso%20ja%20iloinen%20spanieli.png");
   background-position: center center;
-  background-size: cover;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   display: flex;
   align-items: center;
@@ -394,21 +395,25 @@ footer {
   white-space: nowrap;
   border: 0;
 }
-  /* Harjoittelun lopullinen ulkoasukorjaus */
-#practicePanel {
-  display: block !important;
-  grid-template-columns: none !important;
-  padding: 0 !important;
-}
-
-#practicePanel > .practice-heading {
-  display: none !important;
-}
-
-#practicePanel > .practice-art {
-  width: 100% !important;
-  margin: 0 !important;
-}
+</style>
+<style id="editorExportOverrides">
+/* Sanastomaailman muokkaustyöpöydästä viedyt asetukset */
+body{background-size:100% 100%!important;background-position:calc(50% + 0px) 0px!important;background-repeat:no-repeat!important}
+.page{width:min(100%,1540px)!important;padding:340px 24px 25px!important}
+.tabs{transform:translate(-260px,275px) scale(1,1)!important;transform-origin:top left!important;}
+#practiceView .main-grid > .panel:first-child{transform:translate(15px,105px) scale(1,1)!important;transform-origin:top left!important;}
+.stages-panel{transform:translate(25px,100px) scale(1,1)!important;transform-origin:top left!important;}
+.word-panel{transform:translate(35px,75px) scale(1,1)!important;transform-origin:top left!important;}
+.practice-panel{transform:translate(330px,70px) scale(0.75,0.8)!important;transform-origin:top left!important;}
+.quiz-card{transform:translate(-255px,-40px) scale(1.25,1.25)!important;transform-origin:top left!important;}
+#wordsView .word-tab-panel{transform:translate(0px,0px) scale(1,1)!important;transform-origin:top left!important;}
+/* laatikoiden sijainti ja venytys asetetaan positionCss-säännöillä */
+.tabs{display:grid!important;grid-template-columns:minmax(0,1fr)!important;width:250px!important;max-width:100%!important;margin-left:0!important;margin-right:auto!important}
+.practice-heading{display:none!important}
+.practice-panel{grid-template-columns:minmax(0,1fr)!important;gap:0!important}
+.practice-art{width:100%!important;aspect-ratio:3.8/1!important;min-height:0!important;background-image:url("Satulaakso%20ja%20iloinen%20spanieli.png")!important;background-position:center center!important;background-size:100% 100%!important;background-repeat:no-repeat!important}
+.quiz-card{width:min(100%,510px)!important;padding:14px 20px!important;background:rgba(255,253,247,0.73)!important}
+@media(max-width:700px){.page{padding:220px 9px 18px!important}.practice-art{aspect-ratio:2.2/1!important;padding:10px!important}.quiz-card{padding:14px!important}}
 </style>
 </head>
 <body>
