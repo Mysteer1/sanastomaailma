@@ -595,8 +595,28 @@
 function checkAnswer() {
   if (answered || !currentWord) return;
 
-  const answer = $("answerInput").value.trim().toLowerCase();
-  if (!answer) return;
+    const answer = $("answerInput").value.trim().toLowerCase();
+    if (!answer) return;
+
+    answered = true;
+    totalAnswers++;
+
+    const feedback = $("feedback");
+    feedback.className = "feedback";
+    if (answer === currentWord.english.trim().toLowerCase()) {
+      correctAnswers++;
+      feedback.classList.add("correct");
+      feedback.textContent =
+        "Oikein!\n" + currentWord.finnish + " = " + currentWord.english;
+    } else {
+      feedback.classList.add("incorrect");
+      feedback.textContent =
+        "Väärin.\nOikea vastaus: " + currentWord.english;
+    }
+    $("answerInput").disabled = true;
+    $("checkButton").disabled = true;
+    $("nextButton").classList.remove("hidden");
+  }
 
   answered = true;
   totalAnswers++;
