@@ -235,9 +235,11 @@ input[type="text"] {
   padding: 18px;
   border: 1px solid #d5e0dd;
   border-radius: 18px;
-  background:
-    linear-gradient(90deg,rgba(215,240,250,.4),rgba(255,255,255,.25)),
-    url("Sanastomaailma_%20Fantasia-arkiston%20kartta.png") center 75%/cover no-repeat;
+ background: linear-gradient(
+  90deg,
+  rgba(215,240,250,.4),
+  rgba(255,255,255,.25)
+);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -331,7 +333,7 @@ footer {
   font: 12px Arial, sans-serif;
 }
 @media (max-width: 1100px) {
-  .page { padding: 0 14px 20px; }
+  .page { padding: 300px 14px 20px; }
   .main-grid { grid-template-columns: minmax(230px,.8fr) minmax(0,1.5fr); }
   .word-panel { grid-column: 1 / -1; }
   .box-list { grid-template-columns: repeat(2,minmax(0,1fr)); }
@@ -340,8 +342,11 @@ footer {
   .stage-button { font-size: 12px; }
 }
 @media (max-width: 700px) {
-  body { background-size: auto 100vh; background-position: center top; }
-  .page { padding: 0 9px 18px; }
+ body {
+  background-size: 100% auto;
+  background-position: center top;
+}
+.page { padding: 220px 9px 18px; }
   .main-grid { grid-template-columns: minmax(0,1fr); gap: 10px; }
   .word-panel { grid-column: auto; }
   .stage-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
