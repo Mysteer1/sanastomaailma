@@ -397,24 +397,40 @@ footer {
 }
 </style>
 <style id="editorExportOverrides">
-/* Sanastomaailman muokkaustyöpöydästä viedyt asetukset */
 body{background-size:100% 100%!important;background-position:calc(50% + 0px) 0px!important;background-repeat:no-repeat!important}
 .page{width:min(100%,1540px)!important;padding:340px 24px 25px!important}
-.tabs{transform:translate(-260px,275px) scale(1,1)!important;transform-origin:top left!important;}
-#practiceView .main-grid > .panel:first-child{transform:translate(15px,105px) scale(1,1)!important;transform-origin:top left!important;}
-.stages-panel{transform:translate(25px,100px) scale(1,1)!important;transform-origin:top left!important;}
-.word-panel{transform:translate(35px,75px) scale(1,1)!important;transform-origin:top left!important;}
-.practice-panel{transform:translate(330px,70px) scale(0.75,0.8)!important;transform-origin:top left!important;}
-.quiz-card{transform:translate(-255px,-40px) scale(1.25,1.25)!important;transform-origin:top left!important;}
+.tabs{transform:translate(-260px,230px) scale(1,1)!important;transform-origin:top left!important;}
+#practiceView .main-grid > .panel:first-child{transform:translate(20px,90px) scale(1,1)!important;transform-origin:top left!important;}
+.stages-panel{transform:translate(40px,65px) scale(1,1)!important;transform-origin:top left!important;}
+.word-panel{transform:translate(45px,45px) scale(1,1)!important;transform-origin:top left!important;}
+.practice-panel{transform:translate(275px,45px) scale(0.85,0.95)!important;transform-origin:top left!important;}
+.quiz-card{transform:translate(-25px,0px) scale(1,1)!important;transform-origin:top left!important;}
 #wordsView .word-tab-panel{transform:translate(0px,0px) scale(1,1)!important;transform-origin:top left!important;}
-/* laatikoiden sijainti ja venytys asetetaan positionCss-säännöillä */
-.tabs{display:grid!important;grid-template-columns:minmax(0,1fr)!important;width:250px!important;max-width:100%!important;margin-left:0!important;margin-right:auto!important}
+.tabs{grid-template-columns:minmax(0,1fr)!important;width:250px!important;max-width:100%!important;margin-left:0!important;margin-right:auto!important}
 .practice-heading{display:none!important}
 .practice-panel{grid-template-columns:minmax(0,1fr)!important;gap:0!important}
-.practice-art{width:100%!important;aspect-ratio:3.8/1!important;min-height:0!important;background-image:url("Satulaakso%20ja%20iloinen%20spanieli.png")!important;background-position:center center!important;background-size:100% 100%!important;background-repeat:no-repeat!important}
-.quiz-card{width:min(100%,510px)!important;padding:14px 20px!important;background:rgba(255,253,247,0.73)!important}
-@media(max-width:700px){.page{padding:220px 9px 18px!important}.practice-art{aspect-ratio:2.2/1!important;padding:10px!important}.quiz-card{padding:14px!important}}
-</style>
+.practice-art{width:100%!important;aspect-ratio:5/1!important;min-height:0!important;background-image:url("Satulaakso%20ja%20iloinen%20spanieli.png")!important;background-position:center center!important;background-size:100% 100%!important;background-repeat:no-repeat!important}
+.quiz-card{width:min(100%,470px)!important;padding:10px 20px!important;background:rgba(255,253,247,0.78)!important}
+
+@media(max-width:700px){
+
+body{background-size:185% 45%!important;background-position:calc(50% + 140px) 0px!important;background-repeat:no-repeat!important}
+.page{width:min(100%,1540px)!important;padding:220px 9px 25px!important}
+.tabs{transform:translate(0px,0px) scale(1,1)!important;transform-origin:top left!important;}
+#practiceView .main-grid > .panel:first-child{transform:translate(0px,0px) scale(1,1)!important;transform-origin:top left!important;}
+.stages-panel{transform:translate(0px,0px) scale(1,1)!important;transform-origin:top left!important;}
+.word-panel{transform:translate(0px,0px) scale(1,1)!important;transform-origin:top left!important;}
+.practice-panel{transform:translate(0px,0px) scale(1,1)!important;transform-origin:top left!important;}
+.quiz-card{transform:translate(0px,30px) scale(1,0.85)!important;transform-origin:top left!important;}
+#wordsView .word-tab-panel{transform:translate(0px,0px) scale(1,1)!important;transform-origin:top left!important;}
+.tabs{grid-template-columns:minmax(0,1fr)!important;width:250px!important;max-width:100%!important;margin-left:0!important;margin-right:auto!important}
+.practice-heading{display:none!important}
+.practice-panel{grid-template-columns:minmax(0,1fr)!important;gap:0!important}
+.practice-art{width:100%!important;aspect-ratio:2.2/1!important;min-height:0!important;background-image:url("Satulaakso%20ja%20iloinen%20spanieli.png")!important;background-position:center center!important;background-size:100% 100%!important;background-repeat:no-repeat!important}
+.quiz-card{width:min(100%,465px)!important;padding:14px 20px!important;background:rgba(255,253,247,0.78)!important}
+
+.practice-art{padding:10px!important}.quiz-card{padding:14px!important}
+}</style>
 </head>
 <body>
 <div class="page">
