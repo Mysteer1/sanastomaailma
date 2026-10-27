@@ -585,7 +585,9 @@
     function startQuiz() {
       if (selectedBox === null) return;
 
-      const selectedWords = words.filter(word => word.box === selectedBox);
+    const selectedWords = selectedBox === "all"
+  ? words.filter(word => word.box >= 1 && word.box <= 3)
+  : words.filter(word => word.box === Number(selectedBox));
 
       if (selectedWords.length === 0) {
         updateSelectedBox();
