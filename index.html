@@ -1,10 +1,11 @@
-
+```html
 <!DOCTYPE html>
 <html lang="fi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sanasto – Englanti ja suomi</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -14,13 +15,19 @@
       background: #f4f6fa;
       color: #202938;
     }
-    h1 { color: #2457c5; }
+
+    h1 {
+      color: #2457c5;
+    }
+
     .card {
       background: white;
       padding: 20px;
       border-radius: 12px;
       margin: 20px 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
+
     input, button {
       box-sizing: border-box;
       width: 100%;
@@ -29,40 +36,107 @@
       border-radius: 8px;
       font-size: 16px;
     }
-    input { border: 1px solid #ccd3df; }
+
+    input {
+      border: 1px solid #ccd3df;
+    }
+
     button {
       background: #2457c5;
       color: white;
       border: 0;
       cursor: pointer;
     }
-    button:disabled { opacity: 0.5; cursor: not-allowed; }
-    li { margin: 12px 0; }
-    .muted { color: #657084; font-size: 14px; }
-    #message, #quizMessage { white-space: pre-wrap; }
-    .correct { color: #167a43; }
-    .wrong { color: #b42318; }
+
+    button:hover {
+      background: #1946a5;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    li {
+      margin: 12px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .muted {
+      color: #657084;
+      font-size: 14px;
+    }
+
+    #message, #quizMessage {
+      white-space: pre-wrap;
+    }
+
+    .correct {
+      color: #167a43;
+      font-weight: bold;
+    }
+
+    .wrong {
+      color: #b42318;
+      font-weight: bold;
+    }
+
     .word-prompt {
       text-align: center;
       font-size: 30px;
       font-weight: bold;
       margin: 24px 0;
+      overflow-wrap: anywhere;
     }
-    .hidden { display: none; }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .secondary-button {
+      background: #657084;
+    }
+
+    .delete-button {
+      width: auto;
+      padding: 6px 10px;
+      margin-left: 8px;
+      font-size: 14px;
+      background: #b42318;
+    }
+
+    .score {
+      font-size: 18px;
+      font-weight: bold;
+    }
   </style>
 </head>
+
 <body>
   <h1>Sanasto</h1>
-  <p>Syötä itse englannin- ja suomenkieliset sanaparit ja harjoittele niitä.</p>
+  <p>
+    Lisää itse englannin- ja suomenkieliset sanaparit.
+    Harjoittele niitä omaan tahtiisi.
+  </p>
 
   <div class="card">
     <h2>Lisää uusi sana</h2>
 
     <label for="english">Englanninkielinen sana</label>
-    <input id="english" placeholder="Esim. absorbing">
+    <input
+      id="english"
+      type="text"
+      placeholder="Esim. absorbing"
+      autocomplete="off"
+    >
 
     <label for="finnish">Suomenkielinen vastine</label>
-    <input id="finnish" placeholder="Esim. kiehtova">
+    <input
+      id="finnish"
+      type="text"
+      placeholder="Esim. kiehtova"
+      autocomplete="off"
+    >
 
     <button id="addWord">Lisää sanastoon</button>
     <p id="message" role="status"></p>
@@ -70,23 +144,42 @@
 
   <div class="card">
     <h2>Oma sanastosi</h2>
-    <p id="wordCount" class="muted"></p>
+    <p id="wordCount" class="muted">0 sanaparia</p>
     <ul id="wordList"></ul>
   </div>
 
   <div class="card">
     <h2>Sanakoe</h2>
-    <p class="muted">Näet suomenkielisen sanan. Kirjoita sen englanninkielinen vastine.</p>
+
+    <p class="muted">
+      Ohjelma näyttää suomenkielisen sanan.
+      Kirjoita englanninkielinen vastine.
+      Väärin menneet sanat palaavat harjoitukseen uudelleen.
+    </p>
 
     <button id="startQuiz">Aloita harjoittelu</button>
 
     <div id="quizArea" class="hidden">
       <p id="progress" class="muted"></p>
+
       <div id="question" class="word-prompt"></div>
-      <input id="answer" placeholder="Kirjoita englanniksi">
+
+      <label for="answer">Englanninkielinen vastauksesi</label>
+      <input
+        id="answer"
+        type="text"
+        placeholder="Kirjoita englanniksi"
+        autocomplete="off"
+      >
+
       <button id="checkAnswer">Tarkista vastaus</button>
+
       <p id="quizMessage" role="status"></p>
+
       <button id="nextQuestion" class="hidden">Seuraava sana</button>
+      <button id="restartQuiz" class="secondary-button hidden">
+        Aloita uusi kierros
+      </button>
     </div>
   </div>
 
@@ -94,10 +187,13 @@
     const STORAGE_KEY = "sanastoAppWords";
 
     let words = loadWords();
-    let quizWords = [];
+
+    let quizQueue = [];
     let quizIndex = 0;
     let quizScore = 0;
+    let totalAnswered = 0;
     let answered = false;
+    let sessionActive = false;
 
     const englishInput = document.getElementById("english");
     const finnishInput = document.getElementById("finnish");
@@ -105,41 +201,90 @@
     const wordList = document.getElementById("wordList");
     const wordCount = document.getElementById("wordCount");
 
+    const quizArea = document.getElementById("quizArea");
+    const progress = document.getElementById("progress");
+    const question = document.getElementById("question");
+    const answerInput = document.getElementById("answer");
+    const checkButton = document.getElementById("checkAnswer");
+    const nextButton = document.getElementById("nextQuestion");
+    const restartButton = document.getElementById("restartQuiz");
+    const quizMessage = document.getElementById("quizMessage");
+
     function loadWords() {
       try {
-        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-        return Array.isArray(saved) ? saved.filter(
-          w => w && typeof w.english === "string" &&
-               typeof w.finnish === "string"
-        ) : [];
+        const saved = JSON.parse(
+          localStorage.getItem(STORAGE_KEY) || "[]"
+        );
+
+        return Array.isArray(saved)
+          ? saved.filter(word =>
+              word &&
+              typeof word.english === "string" &&
+              typeof word.finnish === "string"
+            )
+          : [];
       } catch {
         return [];
       }
     }
 
     function saveWords() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(words));
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(words));
+      } catch {
+        message.textContent =
+          "Tallennus epäonnistui. Tarkista selaimen tallennusasetukset.";
+      }
+    }
+
+    function normalize(text) {
+      return text.trim().toLocaleLowerCase("en-US");
     }
 
     function renderWords() {
       wordList.replaceChildren();
       wordCount.textContent = words.length + " sanaparia";
 
+      if (words.length === 0) {
+        const emptyItem = document.createElement("li");
+        emptyItem.textContent = "Et ole vielä lisännyt sanoja.";
+        wordList.appendChild(emptyItem);
+        return;
+      }
+
       words.forEach((word, index) => {
         const item = document.createElement("li");
-        item.appendChild(document.createTextNode(
-          word.english + " – " + word.finnish + " "
-        ));
+
+        const text = document.createElement("span");
+        text.textContent = word.english + " – " + word.finnish;
+        item.appendChild(text);
 
         const removeButton = document.createElement("button");
         removeButton.textContent = "Poista";
-        removeButton.style.width = "auto";
-        removeButton.style.padding = "5px 9px";
-        removeButton.style.marginLeft = "8px";
+        removeButton.className = "delete-button";
+        removeButton.setAttribute(
+          "aria-label",
+          "Poista sanapari " + word.english
+        );
+
         removeButton.addEventListener("click", () => {
           words.splice(index, 1);
           saveWords();
           renderWords();
+
+          if (sessionActive) {
+            quizQueue = quizQueue.filter(
+              queuedWord => queuedWord.id !== word.id
+            );
+
+            if (quizIndex >= quizQueue.length) {
+              finishQuiz();
+            } else {
+              showQuestion();
+            }
+          }
+
+          message.textContent = "Sanapari poistettu.";
         });
 
         item.appendChild(removeButton);
@@ -147,7 +292,7 @@
       });
     }
 
-    document.getElementById("addWord").addEventListener("click", () => {
+    function addWord() {
       const english = englishInput.value.trim();
       const finnish = finnishInput.value.trim();
 
@@ -156,9 +301,9 @@
         return;
       }
 
-      const duplicate = words.some(w =>
-        w.english.toLowerCase() === english.toLowerCase() &&
-        w.finnish.toLowerCase() === finnish.toLowerCase()
+      const duplicate = words.some(word =>
+        normalize(word.english) === normalize(english) &&
+        normalize(word.finnish) === normalize(finnish)
       );
 
       if (duplicate) {
@@ -166,7 +311,13 @@
         return;
       }
 
-      words.push({ english, finnish });
+      const word = {
+        id: createId(),
+        english,
+        finnish
+      };
+
+      words.push(word);
       saveWords();
       renderWords();
 
@@ -174,96 +325,202 @@
       finnishInput.value = "";
       message.textContent = "Sanapari lisätty!";
       englishInput.focus();
-    });
+    }
+
+    function createId() {
+      return Date.now().toString(36) +
+        Math.random().toString(36).slice(2);
+    }
+
+    function shuffle(array) {
+      const result = [...array];
+
+      for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [result[i], result[j]] = [result[j], result[i]];
+      }
+
+      return result;
+    }
+
+    function startQuiz() {
+      if (words.length === 0) {
+        quizArea.classList.remove("hidden");
+        question.textContent = "Lisää ensin omia sanapareja sanastoon.";
+        progress.textContent = "";
+        answerInput.classList.add("hidden");
+        checkButton.classList.add("hidden");
+        nextButton.classList.add("hidden");
+        restartButton.classList.add("hidden");
+        quizMessage.textContent = "";
+        sessionActive = false;
+        return;
+      }
+
+      quizQueue = shuffle(words).map(word => ({
+        ...word,
+        attempts: 0
+      }));
+
+      quizIndex = 0;
+      quizScore = 0;
+      totalAnswered = 0;
+      answered = false;
+      sessionActive = true;
+
+      quizArea.classList.remove("hidden");
+      restartButton.classList.add("hidden");
+      showQuestion();
+    }
 
     function showQuestion() {
-      if (quizIndex >= quizWords.length) {
-        document.getElementById("question").textContent = "Harjoittelu valmis!";
-        document.getElementById("progress").textContent =
-          "Tulos: " + quizScore + " / " + quizWords.length + " oikein";
-        document.getElementById("answer").classList.add("hidden");
-        document.getElementById("checkAnswer").classList.add("hidden");
-        document.getElementById("nextQuestion").classList.add("hidden");
-        document.getElementById("quizMessage").textContent =
-          "Voit aloittaa uuden kierroksen painamalla Aloita harjoittelu.";
+      if (quizQueue.length === 0 || quizIndex >= quizQueue.length) {
+        finishQuiz();
         return;
       }
 
       answered = false;
-      document.getElementById("progress").textContent =
-        "Sana " + (quizIndex + 1) + " / " + quizWords.length;
-      document.getElementById("question").textContent =
-        quizWords[quizIndex].finnish;
-      document.getElementById("answer").value = "";
-      document.getElementById("answer").classList.remove("hidden");
-      document.getElementById("checkAnswer").classList.remove("hidden");
-      document.getElementById("checkAnswer").disabled = false;
-      document.getElementById("nextQuestion").classList.add("hidden");
-      document.getElementById("quizMessage").textContent = "";
-      document.getElementById("answer").focus();
+
+      const currentWord = quizQueue[quizIndex];
+
+      progress.textContent =
+        "Sana " + (quizIndex + 1) + " / " + quizQueue.length +
+        " · Oikein: " + quizScore;
+
+      question.textContent = currentWord.finnish;
+
+      answerInput.value = "";
+      answerInput.classList.remove("hidden");
+
+      checkButton.classList.remove("hidden");
+      checkButton.disabled = false;
+
+      nextButton.classList.add("hidden");
+      restartButton.classList.add("hidden");
+
+      quizMessage.textContent = "";
+      quizMessage.className = "";
+
+      answerInput.focus();
     }
 
-    document.getElementById("startQuiz").addEventListener("click", () => {
-      if (words.length === 0) {
-        document.getElementById("quizArea").classList.remove("hidden");
-        document.getElementById("question").textContent =
-          "Lisää ensin sanapareja sanastoon.";
-        document.getElementById("progress").textContent = "";
-        document.getElementById("answer").classList.add("hidden");
-        document.getElementById("checkAnswer").classList.add("hidden");
-        document.getElementById("nextQuestion").classList.add("hidden");
-        document.getElementById("quizMessage").textContent = "";
+    function checkAnswer() {
+      if (answered || !sessionActive) {
         return;
       }
 
-      quizWords = [...words].sort(() => Math.random() - 0.5);
-      quizIndex = 0;
-      quizScore = 0;
-      document.getElementById("quizArea").classList.remove("hidden");
-      showQuestion();
-    });
-
-    document.getElementById("checkAnswer").addEventListener("click", () => {
-      if (answered) return;
-
-      const answer = document.getElementById("answer").value.trim();
-      const correct = quizWords[quizIndex].english;
+      const answer = answerInput.value.trim();
 
       if (!answer) {
-        document.getElementById("quizMessage").textContent =
-          "Kirjoita ensin vastaus.";
+        quizMessage.textContent = "Kirjoita ensin vastaus.";
+        quizMessage.className = "";
         return;
       }
 
       answered = true;
-      const result = document.getElementById("quizMessage");
+      totalAnswered++;
 
-      if (answer.toLowerCase() === correct.toLowerCase()) {
+      const currentWord = quizQueue[quizIndex];
+      currentWord.attempts++;
+
+      if (normalize(answer) === normalize(currentWord.english)) {
         quizScore++;
-        result.textContent = "Oikein!";
-        result.className = "correct";
+
+        quizMessage.textContent = "Oikein! Hyvä!";
+        quizMessage.className = "correct";
       } else {
-        result.textContent = "Ei aivan. Oikea vastaus: " + correct;
-        result.className = "wrong";
+        quizMessage.textContent =
+          "Ei aivan. Oikea vastaus on: " + currentWord.english;
+
+        quizMessage.className = "wrong";
+
+        // Väärin mennyt sana lisätään myöhemmäksi samaan kierrokseen.
+        // Se ei jää kiertämään loputtomasti.
+        currentWord.retry = true;
       }
 
-      document.getElementById("checkAnswer").disabled = true;
-      document.getElementById("nextQuestion").classList.remove("hidden");
-      document.getElementById("nextQuestion").textContent =
-        quizIndex === quizWords.length - 1 ? "Näytä tulos" : "Seuraava sana";
-    });
+      checkButton.disabled = true;
+      nextButton.classList.remove("hidden");
 
-    document.getElementById("nextQuestion").addEventListener("click", () => {
+      const hasMore = quizIndex < quizQueue.length - 1;
+      nextButton.textContent = hasMore
+        ? "Seuraava sana"
+        : "Näytä tulos";
+    }
+
+    function nextQuestion() {
+      if (!answered) {
+        return;
+      }
+
+      const currentWord = quizQueue[quizIndex];
+
+      // Väärin vastattu sana palautetaan jonon loppuun.
+      // Jokainen sana voidaan lisätä kertaukseen vain kerran.
+      if (currentWord.retry && !currentWord.retried) {
+        currentWord.retried = true;
+        currentWord.retry = false;
+        quizQueue.push(currentWord);
+      }
+
       quizIndex++;
+
+      if (quizIndex >= quizQueue.length) {
+        finishQuiz();
+        return;
+      }
+
       showQuestion();
+    }
+
+    function finishQuiz() {
+      sessionActive = false;
+      answered = false;
+
+      question.textContent = "Harjoittelu valmis!";
+
+      progress.textContent =
+        "Kierroksen tulos: " + quizScore +
+        " / " + totalAnswered + " oikein";
+
+      answerInput.classList.add("hidden");
+      checkButton.classList.add("hidden");
+      nextButton.classList.add("hidden");
+      restartButton.classList.remove("hidden");
+
+      quizMessage.textContent =
+        "Voit aloittaa uuden kierroksen, kun haluat harjoitella lisää.";
+
+      quizMessage.className = "score";
+    }
+
+    document.getElementById("addWord").addEventListener("click", addWord);
+
+    finnishInput.addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        addWord();
+      }
     });
 
-    document.getElementById("answer").addEventListener("keydown", event => {
+    englishInput.addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        finnishInput.focus();
+      }
+    });
+
+    document.getElementById("startQuiz")
+      .addEventListener("click", startQuiz);
+
+    checkButton.addEventListener("click", checkAnswer);
+    nextButton.addEventListener("click", nextQuestion);
+    restartButton.addEventListener("click", startQuiz);
+
+    answerInput.addEventListener("keydown", event => {
       if (event.key === "Enter") {
         if (answered) {
-          document.getElementById("nextQuestion").click();
+          nextQuestion();
         } else {
-          document.getElementById("checkAnswer").click();
+          checkAnswer();
         }
       }
     });
@@ -272,3 +529,4 @@
   </script>
 </body>
 </html>
+```
