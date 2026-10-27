@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sanasto – Englanti & Suomi</title>
+</head>
+<body>
+  <h1>Sanasto</h1>
+  <p>Harjoittele englannin ja suomen sanoja.</p>
+
+  <label for="word">Syötä sana:</label>
+  <input id="word" type="text" placeholder="Esim. absorbing">
+
+  <button id="addWord">Lisää sana</button>
+
+  <h2>Sanastosi</h2>
+  <ul id="wordList"></ul>
+
+  <script>
+    const words = [];
+
+    document.getElementById("addWord").addEventListener("click", () => {
+      const input = document.getElementById("word");
+      const word = input.value.trim();
+
+      if (!word) return;
+
+      words.push(word);
+
+      const item = document.createElement("li");
+      item.textContent = word;
+      document.getElementById("wordList").appendChild(item);
+
+      input.value = "";
+      input.focus();
+    });
+  </script>
+</body>
+</html>
