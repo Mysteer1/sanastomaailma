@@ -4,388 +4,518 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sanastomaailma – Sanoja. Matkoja. Mahdollisuuksia.</title>
+<title>Sanastomaailma</title>
 <style>
-:root{
-  --navy:#12365f;
-  --blue:#3478bd;
-  --green:#41865b;
-  --gold:#d99b31;
-  --purple:#6e59b7;
-  --cream:#fffaf0;
-  --border:#eadfca;
-  --text:#203957;
+:root {
+  --blue: #347fc4;
+  --blue-dark: #1c568d;
+  --green: #43895b;
+  --gold: #d99b28;
+  --purple: #7058b8;
+  --ink: #12365f;
+  --cream: #fffaf0;
+  --border: #eadcc5;
 }
-*{box-sizing:border-box}
-body{
-  margin:0;
-  color:var(--text);
-  background:#f6f0e4;
-  font-family:Georgia,"Times New Roman",serif;
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  background-color: #f7f0df;
+  background-image: url("Sanastomaailman%20lumoava%20kartta.png");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: 100% auto;
+  min-height: 100vh;
 }
-button,input{font:inherit}
-button{
-  cursor:pointer;
-  border:0;
-  border-radius:13px;
-  padding:11px 15px;
-  background:var(--blue);
-  color:white;
-  font-weight:bold;
-  box-shadow:0 3px 0 #24598e;
+button, input { font: inherit; }
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible {
+  outline: 3px solid #f0b83e;
+  outline-offset: 2px;
 }
-button:hover{filter:brightness(1.05)}
-button:disabled{opacity:.5;cursor:not-allowed}
-input{
-  width:100%;
-  display:block;
-  border:1px solid #d8cebc;
-  border-radius:11px;
-  padding:12px;
-  margin:8px 0 15px;
-  background:#fffdf8;
-  color:var(--text);
-  font-family:Arial,sans-serif;
-  font-size:15px;
+button:disabled { opacity: .55; cursor: not-allowed; }
+.hidden { display: none !important; }
+.page {
+  width: min(100%, 1536px);
+  margin: 0 auto;
+  padding: 0 24px 25px;
 }
-label{font-weight:bold}
-h1,h2,h3,p{overflow-wrap:anywhere}
-h2{font-size:23px;margin:0 0 9px}
-h3{font-size:19px;margin:0 0 7px}
-p{line-height:1.45}
-.muted{font:14px Arial,sans-serif;color:#69798a}
-.hidden{display:none!important}
-
-/* Yläbanneri käyttää alkuperäisen mallikuvan maisemaa. */
-.hero{
-  width:100%;
-  height:clamp(220px,23vw,350px);
-  min-height:220px;
-  position:relative;
- background-image: url("Sanastomaailman%20lumoava%20kartta.png");
-background-size: cover;
-background-position: center top;
-background-repeat: no-repeat;
-  border-bottom:5px solid #d9e6d0;
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  width: 74%;
+  margin: 0 0 12px;
+  padding: 8px;
+  background: rgba(255, 253, 247, .92);
+  border: 1px solid rgba(220, 211, 193, .75);
+  border-radius: 0 0 17px 17px;
+  box-shadow: 0 3px 12px #263b4a0c;
 }
-.hero-shade{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(90deg,rgba(255,250,235,.08),transparent 48%);
-  pointer-events:none;
+.tab {
+  min-height: 44px;
+  border: 1px solid #e4e0d8;
+  border-radius: 12px;
+  color: var(--ink);
+  background: rgba(255,255,255,.72);
+  font-size: 17px;
+  font-weight: bold;
 }
-main{max-width:1540px;margin:auto;padding:0 22px 25px}
-
-/* Välilehdet */
-.tabs{
-  display:flex;
-  gap:7px;
-  max-width:760px;
-  margin:-1px 0 15px;
-  padding:7px;
-  border-radius:0 0 17px 17px;
-  background:#fffdf8;
-  border:1px solid var(--border);
-  box-shadow:0 3px 10px #30445a0c;
+.tab.active {
+  color: white;
+  background: var(--blue);
+  border-color: var(--blue);
+  box-shadow: inset 0 -3px 0 #21598f;
 }
-.tab-button{
-  flex:1;
-  background:transparent;
-  color:#44546b;
-  box-shadow:none;
-  border:1px solid transparent;
-  font-size:16px;
+.main-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, .95fr) minmax(450px, 1.8fr) minmax(245px, .9fr);
+  gap: 14px;
+  align-items: start;
 }
-.tab-button.active{
-  background:var(--blue);
-  color:white;
-  box-shadow:0 3px 0 #24598e;
+.panel {
+  min-width: 0;
+  background: rgba(255, 252, 245, .94);
+  border: 1px solid rgba(231, 218, 196, .9);
+  border-radius: 19px;
+  padding: 18px;
+  box-shadow: 0 4px 14px rgba(72, 62, 40, .07);
 }
-
-/* Kortit ja asettelu */
-.panel{
-  min-width:0;
-  background:rgba(255,252,245,.96);
-  border:1px solid var(--border);
-  border-radius:19px;
-  padding:20px;
-  box-shadow:0 4px 12px #4e543d0b;
+.panel h2 {
+  margin: 0 0 8px;
+  font-size: clamp(19px, 1.7vw, 25px);
+  line-height: 1.2;
 }
-.practice-grid{
-  display:grid;
-  grid-template-columns:minmax(260px, .85fr) minmax(0,1.65fr);
-  gap:15px;
-  align-items:stretch;
+.panel p { line-height: 1.4; }
+.intro { margin: 0 0 16px; color: #42536b; font-size: 15px; }
+.heading-icon { color: var(--blue); margin-right: 7px; }
+label {
+  display: block;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 12px;
 }
-.add-panel{grid-column:1}
-.stages-panel{grid-column:2}
-.quiz-panel{grid-column:1 / -1}
-.panel-intro{margin:0 0 16px;color:#53647b}
-.add-symbol,.heading-symbol{color:var(--blue);font-size:24px;margin-right:7px}
-.stage-grid{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:10px;
+input[type="text"] {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 12px 13px;
+  margin-top: 7px;
+  border: 1px solid #d9cdb9;
+  border-radius: 11px;
+  background: rgba(255,255,255,.9);
+  color: #243b57;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
 }
-.stage-card{
-  min-width:0;
-  overflow:hidden;
-  border:1px solid #e8dec9;
-  border-radius:15px;
-  text-align:center;
-  display:flex;
-  flex-direction:column;
-  padding-bottom:12px;
+.primary-button {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #2467a7;
+  border-radius: 13px;
+  color: white;
+  background: linear-gradient(#3c8bd2, #2870b5);
+  box-shadow: 0 3px 0 #1b558a;
+  font-weight: bold;
 }
-.stage-card.selected{outline:3px solid #5489bd;outline-offset:1px}
-.stage-card img{
-  width:100%;
-  height:clamp(100px,12vw,165px);
-  object-fit:cover;
-  display:block;
+.add-button { margin-top: 14px; }
+.small-note { font: 12px/1.5 Arial, sans-serif; color: #62758a; }
+.stages-panel { padding: 18px; }
+.stage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
 }
-.stage-copy{padding:9px 7px 4px;flex:1}
-.stage-copy h3{font-size:clamp(14px,1.4vw,19px)}
-.stage-copy p{font-size:14px;margin:5px 0}
-.stage-card button{
-  margin:6px 8px 0;
-  padding:9px 5px;
-  font-size:clamp(11px,1vw,14px);
-  box-shadow:0 3px 0 #0002;
+.stage-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(221, 210, 190, .8);
+  border-radius: 15px;
+  text-align: center;
+  transition: transform .15s ease, box-shadow .15s ease;
 }
-.stage-1{background:#e3f2f8}
-.stage-1 button{background:#3478bd;box-shadow:0 3px 0 #24598e}
-.stage-2{background:#edf3dc}
-.stage-2 button{background:var(--green);box-shadow:0 3px 0 #2d6844}
-.stage-3{background:#fff0d7}
-.stage-3 button{background:var(--gold);box-shadow:0 3px 0 #a76d18}
-.stage-4{background:#eee7f8}
-.stage-4 button{background:var(--purple);box-shadow:0 3px 0 #4e3d8d}
-.stage-count{font-size:14px;font-weight:bold}
-
-/* Harjoittelu */
-.quiz-panel{display:grid;grid-template-columns:minmax(200px,.65fr) minmax(0,1.35fr);gap:18px;align-items:center}
-.quiz-intro{padding:10px}
-.quiz-art{
-  border-radius:17px;
-  min-height:240px;
-  background:#e4f0f6 url("banner.jpg") center 45%/cover no-repeat;
-  padding:20px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.stage-card.selected {
+  outline: 3px solid #4486c4;
+  outline-offset: 1px;
+  box-shadow: 0 5px 15px #2d64932b;
 }
-.quiz-card{
-  width:min(100%,500px);
-  padding:20px;
-  text-align:center;
-  border-radius:17px;
-  border:1px solid #e4dfd2;
-  background:rgba(255,253,247,.94);
+.stage-card img {
+  display: block;
+  width: 100%;
+  height: clamp(100px, 10vw, 150px);
+  object-fit: cover;
 }
-.quiz-word{font-size:clamp(29px,4vw,43px);font-weight:bold;margin:18px 0}
-.quiz-progress{font:14px Arial,sans-serif;color:#50647b}
-.feedback{padding:13px;border-radius:12px;margin:12px 0;white-space:pre-line;font-family:Arial,sans-serif}
-.feedback.correct{background:#e5f3d9;color:#28613a}
-.feedback.incorrect{background:#fff0e1;color:#8d4b30}
-.button-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-.button-row button{flex:1}
-#startButton{margin-top:8px}
-#stopButton{background:#778596;box-shadow:0 3px 0 #566373}
-
-/* Sanastolokerot-välilehti */
-.word-section{margin-top:18px}
-.word-section:first-of-type{margin-top:0}
-.word-section h3{padding-bottom:8px;border-bottom:1px solid var(--border)}
-.word-list{list-style:none;margin:0;padding:0}
-.word-list li{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  padding:12px 2px;
-  border-bottom:1px solid #eee5d6;
-  font:15px Arial,sans-serif;
+.stage-copy {
+  flex: 1;
+  padding: 8px 6px 4px;
 }
-.word-text{min-width:0;overflow-wrap:anywhere}
-.delete-button{
-  flex-shrink:0;
-  background:#b34e43;
-  box-shadow:0 3px 0 #80372e;
-  padding:7px 10px;
-  font-size:12px;
+.stage-copy h3 {
+  margin: 0 0 4px;
+  font-size: clamp(13px, 1.15vw, 17px);
+  line-height: 1.2;
 }
-.quote{
-  text-align:center;
-  padding:14px;
-  color:#506a49;
-  font-style:italic;
-  background:#f1f3e5;
-  border-radius:13px;
-  margin-bottom:15px;
+.stage-count { font-size: 13px; margin: 3px 0; }
+.stage-copy p {
+  margin: 5px 0;
+  font-size: clamp(11px, .95vw, 14px);
+  line-height: 1.35;
 }
-footer{text-align:center;padding:22px 10px;color:#6c7c75;font:13px Arial,sans-serif}
-
-@media(max-width:900px){
-  main{padding:0 13px 20px}
-  .practice-grid{grid-template-columns:1fr}
-  .add-panel,.stages-panel,.quiz-panel{grid-column:1}
-  .stage-card img{height:145px}
-  .stage-card button{font-size:13px}
-  .quiz-panel{grid-template-columns:1fr}
-  .quiz-art{min-height:200px}
+.stage-button {
+  margin: 7px 7px 9px;
+  padding: 9px 4px;
+  min-height: 35px;
+  border: 0;
+  border-radius: 12px;
+  color: white;
+  font-size: clamp(11px, .92vw, 14px);
+  font-weight: bold;
+  box-shadow: 0 3px 0 #0002;
 }
-@media(max-width:560px){
-  .hero{height:200px;min-height:200px;background-position:center}
-  main{padding:0 9px 15px}
-  .tabs{width:100%}
-  .tab-button{font-size:14px;padding:10px 5px}
-  .panel{padding:14px}
-  .stage-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .stage-card img{height:125px}
-  .stage-copy h3{font-size:16px}
-  .stage-card button{font-size:12px}
-  .quiz-art{padding:10px;min-height:180px}
-  .quiz-card{padding:15px}
+.stage-1 { background: #e3f0f4; }
+.stage-1 .stage-button { background: var(--blue); }
+.stage-2 { background: #edf2db; }
+.stage-2 .stage-button { background: var(--green); }
+.stage-3 { background: #fff0d6; }
+.stage-3 .stage-button { background: var(--gold); }
+.stage-4 { background: #eee7f8; }
+.stage-4 .stage-button { background: var(--purple); }
+.stage-4 .stage-copy { background: #f1eafa; }
+.stage-message { margin: 12px 0 0; font-size: 13px; color: #687b8c; }
+.word-panel h2 { margin-bottom: 8px; }
+.box-list { display: grid; gap: 9px; }
+.box-row {
+  display: grid;
+  grid-template-columns: 100px minmax(0,1fr) 18px;
+  align-items: center;
+  gap: 10px;
+  padding: 7px;
+  background: rgba(255,255,255,.78);
+  border: 1px solid #eadfce;
+  border-radius: 14px;
+  cursor: pointer;
+}
+.box-row:hover { background: white; }
+.box-row img {
+  width: 100px;
+  height: 78px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.box-row strong { display: block; font-size: 15px; line-height: 1.25; }
+.box-row span { display: block; margin-top: 4px; font-size: 13px; }
+.box-row .chevron { font: 24px Arial, sans-serif; color: #7a7e85; }
+.quote {
+  margin: 0 0 14px;
+  padding: 12px;
+  border-radius: 13px;
+  background: rgba(243, 242, 224, .9);
+  color: #496544;
+  font-style: italic;
+  text-align: center;
+}
+.practice-panel {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: minmax(250px, .7fr) minmax(0, 1.4fr);
+  gap: 18px;
+  align-items: center;
+  scroll-margin-top: 12px;
+}
+.practice-heading { padding: 8px; }
+.practice-heading h2 { font-size: 25px; }
+.practice-heading p { margin: 8px 0; color: #40536b; }
+.practice-art {
+  min-height: 205px;
+  padding: 18px;
+  border: 1px solid #d5e0dd;
+  border-radius: 18px;
+  background:
+    linear-gradient(90deg,rgba(215,240,250,.4),rgba(255,255,255,.25)),
+    url("Sanastomaailman%20lumoava%20kartta.png") center 75%/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.quiz-card {
+  width: min(100%, 520px);
+  padding: 15px 20px;
+  border: 1px solid #e0d7c7;
+  border-radius: 16px;
+  background: rgba(255, 253, 247, .92);
+  text-align: center;
+}
+.quiz-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+.quiz-word { font-size: clamp(30px, 3.2vw, 43px); font-weight: bold; margin: 8px 0 14px; }
+.sound-button {
+  border: 1px solid #ddd5c8;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--blue);
+  font-size: 20px;
+  padding: 5px 11px;
+}
+.quiz-card input { text-align: center; }
+.feedback {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  font: 14px/1.5 Arial, sans-serif;
+  white-space: pre-line;
+}
+.feedback.correct { color: #27613a; background: #e6f4df; }
+.feedback.incorrect { color: #85462e; background: #fff0e3; }
+.quiz-actions { display: flex; gap: 8px; margin-top: 10px; }
+.quiz-actions button { flex: 1; }
+.secondary-button {
+  border: 1px solid #d7d0c3;
+  border-radius: 11px;
+  padding: 10px;
+  background: #f5f1e9;
+  color: var(--ink);
+  font-weight: bold;
+}
+.word-tab-panel { margin-top: 0; }
+.word-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 16px;
+}
+.word-group {
+  padding: 15px;
+  background: rgba(255,252,245,.95);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+.word-group h3 {
+  margin: 0 0 10px;
+  font-size: 19px;
+}
+.word-list { list-style: none; padding: 0; margin: 0; }
+.word-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid #eee5d6;
+  font: 14px/1.4 Arial, sans-serif;
+}
+.word-list li:last-child { border-bottom: 0; }
+.word-pair { overflow-wrap: anywhere; }
+.delete-button {
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 8px;
+  padding: 6px 8px;
+  color: white;
+  background: #b34d43;
+  font: 12px Arial, sans-serif;
+}
+.empty-list { color: #778493; font: 13px Arial, sans-serif; }
+footer {
+  padding: 22px 0 8px;
+  text-align: center;
+  color: #5e746e;
+  font: 12px Arial, sans-serif;
+}
+@media (max-width: 1100px) {
+  .page { padding: 0 14px 20px; }
+  .main-grid { grid-template-columns: minmax(230px,.8fr) minmax(0,1.5fr); }
+  .word-panel { grid-column: 1 / -1; }
+  .box-list { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .tabs { width: 100%; }
+  .stage-copy p { font-size: 12px; }
+  .stage-button { font-size: 12px; }
+}
+@media (max-width: 700px) {
+  body { background-size: auto 100vh; background-position: center top; }
+  .page { padding: 0 9px 18px; }
+  .main-grid { grid-template-columns: minmax(0,1fr); gap: 10px; }
+  .word-panel { grid-column: auto; }
+  .stage-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .stage-card img { height: 135px; }
+  .stage-copy h3 { font-size: 16px; }
+  .stage-copy p { font-size: 13px; }
+  .stage-button { font-size: 13px; }
+  .box-list { grid-template-columns: minmax(0,1fr); }
+  .box-row { grid-template-columns: 88px minmax(0,1fr) 16px; }
+  .box-row img { width: 88px; height: 68px; }
+  .practice-panel { grid-template-columns: minmax(0,1fr); gap: 8px; }
+  .practice-heading { padding: 4px; }
+  .practice-art { padding: 10px; min-height: 190px; }
+  .quiz-card { padding: 14px; }
+  .word-groups { grid-template-columns: minmax(0,1fr); }
+  .tabs { margin-bottom: 10px; }
+  .tab { font-size: 15px; }
 }
 </style>
 </head>
 <body>
+<div class="page">
 
-<header class="hero" role="img" aria-label="Sanastomaailman satumainen vuoristo-, järvi- ja linnamaisema">
-  <div class="hero-shade"></div>
-</header>
+  <nav class="tabs" aria-label="Päävalikko">
+    <button class="tab active" id="practiceTab" type="button">◉ Harjoittele</button>
+    <button class="tab" id="wordsTab" type="button">▤ Sanastolokerot</button>
+  </nav>
 
-<main>
-<nav class="tabs" aria-label="Sovelluksen välilehdet">
-  <button type="button" id="practiceTabButton" class="tab-button active" aria-selected="true">◉ Harjoittele</button>
-  <button type="button" id="vocabularyTabButton" class="tab-button" aria-selected="false">▤ Sanastolokerot</button>
-</nav>
+  <div id="practiceView">
+    <div class="main-grid">
 
-<div id="practiceTabContent">
-  <div class="practice-grid">
+      <section class="panel">
+        <h2><span class="heading-icon">✚</span>Lisää uusi sana</h2>
+        <p class="intro">Jokainen uusi sana aloittaa matkansa Sanasaarelta, lokerosta 1.</p>
+        <form id="wordForm">
+          <label for="englishInput">Englanniksi</label>
+          <input id="englishInput" type="text" placeholder="Kirjoita englanninkielinen sana" required>
+          <label for="finnishInput">Suomeksi</label>
+          <input id="finnishInput" type="text" placeholder="Kirjoita suomenkielinen käännös" required>
+          <button class="primary-button add-button" type="submit">＋ Lisää sana lokeroon 1</button>
+        </form>
+        <p id="saveStatus" class="small-note" aria-live="polite">Sanasto tallennetaan selaimeen automaattisesti.</p>
+      </section>
 
-    <section class="panel add-panel">
-      <h2><span class="add-symbol">✚</span>Lisää uusi sana</h2>
-      <p class="panel-intro">Jokainen uusi sana aloittaa matkansa Sanasaarelta, lokerosta 1.</p>
-      <form id="wordForm">
-        <label for="englishInput">Englanniksi</label>
-        <input id="englishInput" type="text" placeholder="Kirjoita englanninkielinen sana" required>
-        <label for="finnishInput">Suomeksi</label>
-        <input id="finnishInput" type="text" placeholder="Kirjoita suomenkielinen käännös" required>
-        <button type="submit" style="width:100%">＋ Lisää sana lokeroon 1</button>
-      </form>
-      <p id="storageMessage" class="muted" aria-live="polite">Sanasto tallennetaan selaimeen automaattisesti.</p>
-    </section>
+      <section class="panel stages-panel">
+        <h2><span class="heading-icon">⛰</span>Valitse seuraava etappi</h2>
+        <p class="intro">Valitse alue, jonka sanoja haluat harjoitella.</p>
+        <div class="stage-grid">
+          <article class="stage-card stage-1" id="stage1">
+            <img src="sanasaari.jpg" alt="Sanasaari, mökki ja laituri järven rannalla">
+            <div class="stage-copy">
+              <h3>Sanasaari</h3>
+              <div class="stage-count" id="count1">0 sanaa</div>
+              <p>Uudet sanat lähtevät matkaan tästä.</p>
+            </div>
+            <button class="stage-button" type="button" data-box="1">Tutki Sanasaarta</button>
+          </article>
+          <article class="stage-card stage-2" id="stage2">
+            <img src="harjoittelulaakso.jpg" alt="Vihreä laakso, polku ja silta">
+            <div class="stage-copy">
+              <h3>Harjoittelulaakso</h3>
+              <div class="stage-count" id="count2">0 sanaa</div>
+              <p>Harjoittele ja vahvista muistiasi.</p>
+            </div>
+            <button class="stage-button" type="button" data-box="2">Mene laaksoon</button>
+          </article>
+          <article class="stage-card stage-3" id="stage3">
+            <img src="oivallusten-vuori.jpg" alt="Vuoristopolku ja linna">
+            <div class="stage-copy">
+              <h3>Oivallusten vuori</h3>
+              <div class="stage-count" id="count3">0 sanaa</div>
+              <p>Olet jo lähellä sanojen hallintaa.</p>
+            </div>
+            <button class="stage-button" type="button" data-box="3">Kiipeä vuorelle</button>
+          </article>
+          <article class="stage-card stage-4" id="stage4">
+            <img src="tahtitorni.jpg" alt="Tähtitorni iltataivaan alla">
+            <div class="stage-copy">
+              <h3>Tähtitorni</h3>
+              <div class="stage-count" id="count4">0 sanaa</div>
+              <p>Katso, kuinka pitkälle olet päässyt.</p>
+            </div>
+            <button class="stage-button" type="button" data-box="4">Vieraile tornissa</button>
+          </article>
+        </div>
+        <p id="stageMessage" class="stage-message" aria-live="polite">Valitse etappi aloittaaksesi harjoittelun.</p>
+      </section>
 
-    <section class="panel stages-panel">
-      <h2><span class="heading-symbol">⛰</span>Valitse seuraava etappi</h2>
-      <p class="panel-intro">Valitse alue, jonka sanoja haluat harjoitella.</p>
-      <div class="stage-grid">
-        <article class="stage-card stage-1" id="boxCard1">
-          <img src="sanasaari.jpg" alt="Sanasaari, pieni saari ja mökki järven rannalla">
-          <div class="stage-copy">
-            <h3>Sanasaari</h3>
-            <div class="stage-count" id="count1">0 sanaa</div>
-            <p>Uudet sanat lähtevät matkaan täältä.</p>
+      <aside class="panel word-panel">
+        <h2><span class="heading-icon">▣</span>Sanat lokeroittain</h2>
+        <p class="intro">Täältä näet kaikki matkallasi keräämäsi sanat.</p>
+        <div class="box-list">
+          <div class="box-row" role="button" tabindex="0" data-open-box="1">
+            <img src="sanasaari.jpg" alt="">
+            <div><strong>Sanasaari</strong><span id="sideCount1">0 sanaa</span></div><span class="chevron">›</span>
           </div>
-          <button type="button" data-box="1">Tutki Sanasaarta</button>
-        </article>
-        <article class="stage-card stage-2" id="boxCard2">
-          <img src="harjoittelulaakso.jpg" alt="Vihreä harjoittelulaakso ja mutkitteleva polku">
-          <div class="stage-copy">
-            <h3>Harjoittelulaakso</h3>
-            <div class="stage-count" id="count2">0 sanaa</div>
-            <p>Harjoittele ja vahvista muistiasi.</p>
+          <div class="box-row" role="button" tabindex="0" data-open-box="2">
+            <img src="harjoittelulaakso.jpg" alt="">
+            <div><strong>Harjoittelulaakso</strong><span id="sideCount2">0 sanaa</span></div><span class="chevron">›</span>
           </div>
-          <button type="button" data-box="2">Mene laaksoon</button>
-        </article>
-        <article class="stage-card stage-3" id="boxCard3">
-          <img src="oivallusten-vuori.jpg" alt="Oivallusten vuori, vesiputous ja vuoristopolku">
-          <div class="stage-copy">
-            <h3>Oivallusten vuori</h3>
-            <div class="stage-count" id="count3">0 sanaa</div>
-            <p>Olet jo lähellä sanojen hallintaa.</p>
+          <div class="box-row" role="button" tabindex="0" data-open-box="3">
+            <img src="oivallusten-vuori.jpg" alt="">
+            <div><strong>Oivallusten vuori</strong><span id="sideCount3">0 sanaa</span></div><span class="chevron">›</span>
           </div>
-          <button type="button" data-box="3">Kiipeä vuorelle</button>
-        </article>
-        <article class="stage-card stage-4" id="boxCard4">
-          <img src="tahtitorni.jpg" alt="Tähtitorni iltataivaan alla">
-          <div class="stage-copy">
-            <h3>Tähtitorni</h3>
-            <div class="stage-count" id="count4">0 sanaa</div>
-            <p>Katso, kuinka pitkälle olet päässyt.</p>
+          <div class="box-row" role="button" tabindex="0" data-open-box="4">
+            <img src="tahtitorni.jpg" alt="">
+            <div><strong>Tähtitorni</strong><span id="sideCount4">0 sanaa</span></div><span class="chevron">›</span>
           </div>
-          <button type="button" data-box="4">Vieraile tornissa</button>
-        </article>
+        </div>
+      </aside>
+    </div>
+
+    <section class="panel practice-panel" id="practicePanel">
+      <div class="practice-heading">
+        <h2><span class="heading-icon">🎯</span>Harjoittelu</h2>
+        <p>Valitse ensin etappi ja aloita harjoittelu.</p>
+        <p id="practiceStatus" class="small-note">Valitse ylhäältä lokero, jonka sanoja haluat harjoitella.</p>
       </div>
-      <p id="selectedBoxMessage" class="muted" aria-live="polite">Valitse etappi aloittaaksesi harjoittelun.</p>
-    </section>
-
-    <section class="panel quiz-panel hidden" id="practicePanel">
-      <div class="quiz-intro">
-        <h2 id="practiceTitle">Harjoittelu</h2>
-        <p id="quizInstructions">Valitse ensin etappi ja aloita harjoittelu.</p>
-        <button id="startButton" type="button" disabled>▶ Aloita harjoittelu</button>
-      </div>
-      <div class="quiz-art">
+      <div class="practice-art">
         <div class="quiz-card">
-          <p id="questionProgress" class="quiz-progress"></p>
-          <div id="questionWord" class="quiz-word"></div>
-          <form id="answerForm">
-            <label for="answerInput">Kirjoita englanninkielinen sana</label>
-            <input id="answerInput" type="text" placeholder="Kirjoita vastaus" autocomplete="off" required>
-            <button id="checkButton" type="submit" style="width:100%">Tarkista vastaus</button>
-          </form>
-          <div id="feedback" class="feedback hidden" aria-live="polite"></div>
-          <div class="button-row">
-            <button id="nextButton" type="button" class="hidden">Seuraava sana →</button>
-            <button id="stopButton" type="button">Lopeta</button>
+          <div id="quizArea">
+            <div class="quiz-top">
+              <span id="questionProgress">Valitse etappi</span>
+              <button class="sound-button" id="soundButton" type="button" aria-label="Kuuntele sana" title="Kuuntele sana">🔊</button>
+            </div>
+            <div class="quiz-word" id="questionWord">Tervetuloa!</div>
+            <form id="answerForm">
+              <label for="answerInput">Kirjoita englanninkielinen sana</label>
+              <input id="answerInput" type="text" placeholder="Kirjoita englanninkielinen sana" autocomplete="off" required>
+              <button class="primary-button" id="checkButton" type="submit">Tarkista vastaus</button>
+            </form>
+            <div id="feedback" class="feedback hidden" aria-live="polite"></div>
+            <div class="quiz-actions">
+              <button id="nextButton" class="primary-button hidden" type="button">Seuraava sana →</button>
+              <button id="startButton" class="secondary-button" type="button">Aloita harjoittelu</button>
+              <button id="stopButton" class="secondary-button hidden" type="button">Lopeta</button>
+            </div>
           </div>
           <div id="resultArea" class="hidden">
-            <h3>Matka jatkuu!</h3>
+            <h2>Hienoa työtä!</h2>
             <p id="resultText"></p>
-            <button id="retryButton" type="button">Harjoittele uudelleen</button>
+            <button class="primary-button" id="retryButton" type="button">Harjoittele uudelleen</button>
           </div>
         </div>
       </div>
     </section>
-
   </div>
-</div>
 
-<div id="vocabularyTabContent" class="hidden">
-  <section class="panel">
-    <div class="quote">🌿 Jokainen sana on askel eteenpäin.</div>
-    <h2>▤ Sanat lokeroittain</h2>
-    <p class="panel-intro">Täältä näet kaikki matkallasi keräämäsi sanat.</p>
-
-    <div class="word-section">
-      <h3>🏝️ Sanasaari · Lokero 1</h3>
-      <ul id="list1" class="word-list"></ul>
-    </div>
-    <div class="word-section">
-      <h3>🌳 Harjoittelulaakso · Lokero 2</h3>
-      <ul id="list2" class="word-list"></ul>
-    </div>
-    <div class="word-section">
-      <h3>⛰️ Oivallusten vuori · Lokero 3</h3>
-      <ul id="list3" class="word-list"></ul>
-    </div>
-    <div class="word-section">
-      <h3>🏰 Tähtitorni · Opitut</h3>
-      <ul id="list4" class="word-list"></ul>
+  <section id="wordsView" class="hidden">
+    <div class="panel word-tab-panel">
+      <div class="quote">🌿 Jokainen sana on askel eteenpäin.</div>
+      <h2>▤ Sanat lokeroittain</h2>
+      <p class="intro">Täältä näet kaikki matkallasi keräämäsi sanat. Voit poistaa sanan, jos haluat.</p>
+      <div class="word-groups">
+        <section class="word-group"><h3>🏝️ Sanasaari · Lokero 1</h3><ul id="list1" class="word-list"></ul></section>
+        <section class="word-group"><h3>🌳 Harjoittelulaakso · Lokero 2</h3><ul id="list2" class="word-list"></ul></section>
+        <section class="word-group"><h3>⛰️ Oivallusten vuori · Lokero 3</h3><ul id="list3" class="word-list"></ul></section>
+        <section class="word-group"><h3>🏰 Tähtitorni · Opitut sanat</h3><ul id="list4" class="word-list"></ul></section>
+      </div>
     </div>
   </section>
-</div>
 
-<footer>Sanastomaailma · Sanoja. Matkoja. Mahdollisuuksia.</footer>
-</main>
+  <footer>Sanastomaailma · Sanoja. Matkoja. Mahdollisuuksia.</footer>
+</div>
 
 <script>
 "use strict";
 
 const STORAGE_KEY = "sanastoAppWords";
+const boxNames = {
+  1: "Sanasaari",
+  2: "Harjoittelulaakso",
+  3: "Oivallusten vuori",
+  4: "Tähtitorni"
+};
+
 let words = [];
 let selectedBox = null;
 let quizQueue = [];
@@ -397,195 +527,164 @@ let totalAnswers = 0;
 
 const $ = id => document.getElementById(id);
 
-function createId() {
+function newId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2);
 }
 
 function saveWords() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(words));
-    $("storageMessage").textContent = "Sanasto tallennettu selaimeen automaattisesti.";
+    $("saveStatus").textContent = "Sanasto tallennettu selaimeen automaattisesti.";
     return true;
   } catch (error) {
-    $("storageMessage").textContent = "Tallennus epäonnistui. Tarkista selaimen tallennustila.";
+    $("saveStatus").textContent = "Tallennus ei onnistunut. Tarkista selaimen asetukset.";
     return false;
   }
 }
 
 function loadWords() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    const parsed = raw ? JSON.parse(raw) : [];
-    if (!Array.isArray(parsed)) throw new Error("Virheellinen sanasto");
-
-    words = parsed
-      .filter(word => word && typeof word === "object")
-      .map(word => {
-        const box = Number(word.box);
+    const stored = localStorage.getItem(STORAGE_KEY);
+    const data = stored ? JSON.parse(stored) : [];
+    words = Array.isArray(data) ? data
+      .filter(w => w && typeof w === "object")
+      .map(w => {
+        const box = Number(w.box);
         return {
-          id: word.id ? String(word.id) : createId(),
-          english: String(word.english ?? "").trim(),
-          finnish: String(word.finnish ?? "").trim(),
+          id: String(w.id || newId()),
+          english: String(w.english || "").trim(),
+          finnish: String(w.finnish || "").trim(),
           box: Number.isInteger(box) && box >= 1 && box <= 4 ? box : 1
         };
       })
-      .filter(word => word.english && word.finnish);
-
+      .filter(w => w.english && w.finnish) : [];
     localStorage.setItem(STORAGE_KEY, JSON.stringify(words));
   } catch (error) {
     words = [];
-    $("storageMessage").textContent = "Tallennettua sanastoa ei voitu lukea.";
+    $("saveStatus").textContent = "Tallennettua sanastoa ei voitu lukea.";
   }
   renderAll();
 }
 
-function renderBoxes() {
+function countWords(box) {
+  return words.filter(w => w.box === box).length;
+}
+
+function renderCounts() {
   for (let box = 1; box <= 4; box++) {
-    const count = words.filter(word => word.box === box).length;
-    $("count" + box).textContent = count + (count === 1 ? " sana" : " sanaa");
-    $("boxCard" + box).classList.toggle("selected", selectedBox === box);
+    const count = countWords(box);
+    const label = count + (count === 1 ? " sana" : " sanaa");
+    $("count" + box).textContent = label;
+    $("sideCount" + box).textContent = label;
+    $("stage" + box).classList.toggle("selected", selectedBox === box);
   }
 }
 
-function renderWordLists() {
+function renderLists() {
   for (let box = 1; box <= 4; box++) {
     const list = $("list" + box);
     list.replaceChildren();
-    const boxWords = words.filter(word => word.box === box);
+    const items = words.filter(w => w.box === box);
 
-    if (boxWords.length === 0) {
-      const item = document.createElement("li");
-      item.className = "muted";
-      item.textContent = "Tämä alue odottaa ensimmäisiä sanojaan.";
-      list.appendChild(item);
+    if (!items.length) {
+      const li = document.createElement("li");
+      li.className = "empty-list";
+      li.textContent = "Ei vielä sanoja tässä lokerossa.";
+      list.appendChild(li);
       continue;
     }
 
-    for (const word of boxWords) {
-      const item = document.createElement("li");
-      const text = document.createElement("span");
-      text.className = "word-text";
-      text.textContent = word.english + " — " + word.finnish;
+    items.forEach(word => {
+      const li = document.createElement("li");
+      const pair = document.createElement("span");
+      pair.className = "word-pair";
+      pair.textContent = word.english + " — " + word.finnish;
 
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "delete-button";
-      button.textContent = "Poista";
-      button.addEventListener("click", () => deleteWord(word.id));
+      const del = document.createElement("button");
+      del.type = "button";
+      del.className = "delete-button";
+      del.textContent = "Poista";
+      del.addEventListener("click", () => deleteWord(word.id));
 
-      item.append(text, button);
-      list.appendChild(item);
-    }
+      li.append(pair, del);
+      list.appendChild(li);
+    });
   }
 }
 
-function updateSelectedBox() {
+function renderStageMessage() {
   if (selectedBox === null) {
-    $("selectedBoxMessage").textContent = "Valitse etappi aloittaaksesi harjoittelun.";
-    $("practicePanel").classList.add("hidden");
+    $("stageMessage").textContent = "Valitse etappi aloittaaksesi harjoittelun.";
+    $("practiceStatus").textContent = "Valitse ylhäältä lokero, jonka sanoja haluat harjoitella.";
+    $("startButton").disabled = true;
     return;
   }
 
-  const count = words.filter(word => word.box === selectedBox).length;
-  const names = {
-    1: "Sanasaari", 2: "Harjoittelulaakso",
-    3: "Oivallusten vuori", 4: "Tähtitorni · Opitut"
-  };
-  $("selectedBoxMessage").textContent = "Valittuna: " + names[selectedBox] + ". Sanoja: " + count + ".";
-  $("practiceTitle").textContent = "🧭 " + names[selectedBox];
-  $("quizInstructions").textContent = count === 0
-    ? "Tällä etapilla ei ole vielä sanoja. Lisää uusia sanoja tai valitse toinen alue."
-    : "Harjoitellaan tämän alueen sanoja rauhassa.";
+  const count = countWords(selectedBox);
+  $("stageMessage").textContent = "Valittuna: " + boxNames[selectedBox] + " · " + count + (count === 1 ? " sana." : " sanaa.");
+  $("practiceStatus").textContent = count
+    ? "Valittuna " + boxNames[selectedBox] + ". Aloita harjoittelu painamalla painiketta."
+    : "Tässä lokerossa ei ole vielä sanoja. Lisää ensin sana tai valitse toinen etappi.";
   $("startButton").disabled = count === 0;
 }
 
 function renderAll() {
-  renderBoxes();
-  renderWordLists();
-  updateSelectedBox();
+  renderCounts();
+  renderLists();
+  renderStageMessage();
 }
 
-function stopQuiz() {
-  $("quizArea").classList.add("hidden");
-  $("resultArea").classList.add("hidden");
-  $("startButton").classList.remove("hidden");
+function shuffle(items) {
+  const arr = [...items];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function selectBox(box) {
+  selectedBox = box;
   quizQueue = [];
   quizIndex = 0;
   currentWord = null;
   answered = false;
-  updateSelectedBox();
-}
-
-function selectBox(box) {
-  stopQuiz();
-  selectedBox = box;
-  $("practicePanel").classList.remove("hidden");
   $("quizArea").classList.remove("hidden");
   $("resultArea").classList.add("hidden");
+  $("questionProgress").textContent = "Valittu alue: " + boxNames[box];
+  $("questionWord").textContent = "Valmis matkaan?";
+  $("answerInput").value = "";
+  $("answerInput").disabled = false;
+  $("checkButton").disabled = false;
+  $("feedback").className = "feedback hidden";
+  $("nextButton").classList.add("hidden");
   $("startButton").classList.remove("hidden");
+  $("stopButton").classList.add("hidden");
   renderAll();
-  $("practicePanel").scrollIntoView({behavior:"smooth",block:"start"});
-}
-
-$("wordForm").addEventListener("submit", event => {
-  event.preventDefault();
-  const english = $("englishInput").value.trim();
-  const finnish = $("finnishInput").value.trim();
-  if (!english || !finnish) return;
-
-  const newWord = {id:createId(),english,finnish,box:1};
-  words.push(newWord);
-
-  if (!saveWords()) {
-    words.pop();
-    return;
-  }
-
-  $("englishInput").value = "";
-  $("finnishInput").value = "";
-  renderAll();
-  $("englishInput").focus();
-});
-
-function deleteWord(id) {
-  const index = words.findIndex(word => word.id === id);
-  if (index < 0) return;
-  const removed = words.splice(index,1)[0];
-
-  if (!saveWords()) {
-    words.splice(index,0,removed);
-    renderAll();
-    return;
-  }
-
-  if (currentWord && currentWord.id === id) stopQuiz();
-  renderAll();
-}
-
-function shuffle(array) {
-  const result = [...array];
-  for (let i=result.length-1;i>0;i--) {
-    const j = Math.floor(Math.random()*(i+1));
-    [result[i],result[j]] = [result[j],result[i]];
-  }
-  return result;
+  $("practicePanel").scrollIntoView({behavior:"smooth", block:"center"});
 }
 
 function startQuiz() {
-  if (selectedBox === null) return;
-  const selectedWords = words.filter(word => word.box === selectedBox);
-  if (!selectedWords.length) {
+  if (selectedBox === null) {
+    $("practiceStatus").textContent = "Valitse ensin jokin neljästä etapista.";
+    return;
+  }
+
+  quizQueue = shuffle(words.filter(w => w.box === selectedBox).map(w => w.id));
+  quizIndex = 0;
+  correctAnswers = 0;
+  totalAnswers = 0;
+
+  if (!quizQueue.length) {
+    $("practiceStatus").textContent = "Tässä lokerossa ei ole vielä sanoja harjoiteltavaksi.";
     renderAll();
     return;
   }
 
-  quizQueue = shuffle(selectedWords.map(word => word.id));
-  quizIndex = 0;
-  correctAnswers = 0;
-  totalAnswers = 0;
   $("quizArea").classList.remove("hidden");
   $("resultArea").classList.add("hidden");
   $("startButton").classList.add("hidden");
+  $("stopButton").classList.remove("hidden");
   showQuestion();
 }
 
@@ -593,9 +692,9 @@ function showQuestion() {
   currentWord = null;
 
   while (quizIndex < quizQueue.length) {
-    const candidate = words.find(word => word.id === quizQueue[quizIndex]);
-    if (candidate && candidate.box === selectedBox) {
-      currentWord = candidate;
+    const found = words.find(w => w.id === quizQueue[quizIndex]);
+    if (found && found.box === selectedBox) {
+      currentWord = found;
       break;
     }
     quizIndex++;
@@ -607,7 +706,7 @@ function showQuestion() {
   }
 
   answered = false;
-  $("questionProgress").textContent = "Sana " + (quizIndex+1) + " / " + quizQueue.length;
+  $("questionProgress").textContent = "Sana " + (quizIndex + 1) + " / " + quizQueue.length;
   $("questionWord").textContent = currentWord.finnish;
   $("answerInput").value = "";
   $("answerInput").disabled = false;
@@ -615,48 +714,43 @@ function showQuestion() {
   $("feedback").className = "feedback hidden";
   $("feedback").textContent = "";
   $("nextButton").classList.add("hidden");
+  $("startButton").classList.add("hidden");
+  $("stopButton").classList.remove("hidden");
   $("answerInput").focus();
 }
 
-$("answerForm").addEventListener("submit", event => {
+function checkAnswer(event) {
   event.preventDefault();
-  checkAnswer();
-});
-
-function checkAnswer() {
   if (answered || !currentWord) return;
+
   const answer = $("answerInput").value.trim().toLocaleLowerCase("en");
   if (!answer) return;
 
   answered = true;
   totalAnswers++;
-
   const previousBox = currentWord.box;
   const correct = answer === currentWord.english.trim().toLocaleLowerCase("en");
   const feedback = $("feedback");
-  feedback.className = "feedback";
 
   if (correct) {
     correctAnswers++;
-    feedback.classList.add("correct");
+    feedback.className = "feedback correct";
     feedback.textContent = "✨ Hienoa! Oikein!\n" + currentWord.finnish + " = " + currentWord.english;
     if (currentWord.box >= 1 && currentWord.box <= 3) currentWord.box++;
   } else {
-    feedback.classList.add("incorrect");
+    feedback.className = "feedback incorrect";
     feedback.textContent = "Ei haittaa, harjoittelu auttaa!\nOikea vastaus: " + currentWord.english;
     if (currentWord.box === 3) currentWord.box = 2;
     else if (currentWord.box === 2) currentWord.box = 1;
   }
 
-  if (!saveWords()) {
-    currentWord.box = previousBox;
-    feedback.textContent += "\nLokeromuutosta ei voitu tallentaa.";
-  }
+  if (!saveWords()) currentWord.box = previousBox;
 
   renderAll();
   $("answerInput").disabled = true;
   $("checkButton").disabled = true;
   $("nextButton").classList.remove("hidden");
+  $("feedback").classList.remove("hidden");
 }
 
 function nextQuestion() {
@@ -669,36 +763,105 @@ function finishQuiz() {
   $("quizArea").classList.add("hidden");
   $("resultArea").classList.remove("hidden");
   $("startButton").classList.remove("hidden");
+  $("stopButton").classList.add("hidden");
 
-  const percent = totalAnswers ? Math.round(correctAnswers/totalAnswers*100) : 0;
+  const percent = totalAnswers ? Math.round(correctAnswers / totalAnswers * 100) : 0;
   $("resultText").textContent =
-    "Matka tältä erää valmis! Kysytyt sanat: " + totalAnswers +
+    "Harjoittelu valmis! Kysytyt sanat: " + totalAnswers +
     ". Oikein: " + correctAnswers + ". Oikeinprosentti: " + percent + "%.";
-
   renderAll();
 }
 
-$("startButton").addEventListener("click",startQuiz);
-$("nextButton").addEventListener("click",nextQuestion);
-$("stopButton").addEventListener("click",stopQuiz);
-$("retryButton").addEventListener("click",startQuiz);
-
-document.querySelectorAll("[data-box]").forEach(button => {
-  button.addEventListener("click",() => selectBox(Number(button.dataset.box)));
-});
-
-function showTab(tab) {
-  const practiceActive = tab === "practice";
-  $("practiceTabContent").classList.toggle("hidden",!practiceActive);
-  $("vocabularyTabContent").classList.toggle("hidden",practiceActive);
-  $("practiceTabButton").classList.toggle("active",practiceActive);
-  $("vocabularyTabButton").classList.toggle("active",!practiceActive);
-  $("practiceTabButton").setAttribute("aria-selected",String(practiceActive));
-  $("vocabularyTabButton").setAttribute("aria-selected",String(!practiceActive));
+function stopQuiz() {
+  currentWord = null;
+  quizQueue = [];
+  answered = false;
+  $("quizArea").classList.remove("hidden");
+  $("resultArea").classList.add("hidden");
+  $("questionProgress").textContent = selectedBox ? boxNames[selectedBox] : "Valitse etappi";
+  $("questionWord").textContent = "Valmis matkaan?";
+  $("answerInput").value = "";
+  $("answerInput").disabled = false;
+  $("checkButton").disabled = false;
+  $("feedback").className = "feedback hidden";
+  $("nextButton").classList.add("hidden");
+  $("startButton").classList.remove("hidden");
+  $("stopButton").classList.add("hidden");
+  renderAll();
 }
 
-$("practiceTabButton").addEventListener("click",() => showTab("practice"));
-$("vocabularyTabButton").addEventListener("click",() => showTab("vocabulary"));
+function deleteWord(id) {
+  const index = words.findIndex(w => w.id === id);
+  if (index < 0) return;
+  const removed = words.splice(index, 1)[0];
+  if (!saveWords()) {
+    words.splice(index, 0, removed);
+    return;
+  }
+  if (currentWord && currentWord.id === id) stopQuiz();
+  renderAll();
+}
+
+function showTab(tab) {
+  const isPractice = tab === "practice";
+  $("practiceView").classList.toggle("hidden", !isPractice);
+  $("wordsView").classList.toggle("hidden", isPractice);
+  $("practiceTab").classList.toggle("active", isPractice);
+  $("wordsTab").classList.toggle("active", !isPractice);
+}
+
+$("wordForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const english = $("englishInput").value.trim();
+  const finnish = $("finnishInput").value.trim();
+  if (!english || !finnish) return;
+
+  words.push({id:newId(), english, finnish, box:1});
+  if (!saveWords()) {
+    words.pop();
+    return;
+  }
+
+  $("englishInput").value = "";
+  $("finnishInput").value = "";
+  renderAll();
+  $("englishInput").focus();
+});
+
+$("answerForm").addEventListener("submit", checkAnswer);
+$("startButton").addEventListener("click", startQuiz);
+$("nextButton").addEventListener("click", nextQuestion);
+$("stopButton").addEventListener("click", stopQuiz);
+$("retryButton").addEventListener("click", startQuiz);
+
+$("practiceTab").addEventListener("click", () => showTab("practice"));
+$("wordsTab").addEventListener("click", () => showTab("words"));
+
+$("soundButton").addEventListener("click", () => {
+  if (!currentWord || !("speechSynthesis" in window)) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(currentWord.english);
+  utterance.lang = "en-US";
+  window.speechSynthesis.speak(utterance);
+});
+
+document.querySelectorAll("[data-box]").forEach(button => {
+  button.addEventListener("click", () => selectBox(Number(button.dataset.box)));
+});
+
+document.querySelectorAll("[data-open-box]").forEach(row => {
+  const open = () => {
+    showTab("practice");
+    selectBox(Number(row.dataset.openBox));
+  };
+  row.addEventListener("click", open);
+  row.addEventListener("keydown", event => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      open();
+    }
+  });
+});
 
 loadWords();
 </script>
