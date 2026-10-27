@@ -2,716 +2,397 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Englannin sanasto</title>
-
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 20px;
-      background: #f3f5f8;
-      color: #222;
-    }
-
-    h1 { margin-top: 0; }
-
-    .panel {
-      background: white;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(0,0,0,.06);
-    }
-
-    label {
-      display: block;
-      margin-bottom: 6px;
-    }
-
-    input {
-      display: block;
-      width: 100%;
-      padding: 11px;
-      margin-bottom: 12px;
-      border: 1px solid #ccc;
-      border-radius: 7px;
-      font: inherit;
-    }
-
-    button {
-      padding: 11px 14px;
-      border: none;
-      border-radius: 7px;
-      background: #2858bd;
-      color: white;
-      font: inherit;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover { filter: brightness(.94); }
-    button:disabled { opacity: .5; cursor: not-allowed; }
-
-    .boxes {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .box-card {
-      padding: 15px;
-      border: 2px solid #ddd;
-      border-radius: 10px;
-      min-width: 0;
-    }
-
-    .box-card.selected {
-      border-color: #2858bd;
-      box-shadow: 0 0 0 2px rgba(40,88,189,.12);
-    }
-
-    .box-card h3 { margin: 0 0 6px; }
-
-    .box-count {
-      margin-bottom: 12px;
-      color: #555;
-      font-size: 14px;
-    }
-
-    .box-card button { width: 100%; }
-
-    .box-1 { background: #eef4ff; }
-    .box-2 { background: #eaf6ed; }
-    .box-3 { background: #fff3df; }
-    .box-4 { background: #f3eaff; }
-
-    .muted {
-      color: #667085;
-      font-size: 14px;
-    }
-
-    .quiz-word {
-      margin: 22px 0;
-      font-size: 30px;
-      font-weight: bold;
-      overflow-wrap: anywhere;
-    }
-
-    .feedback {
-      margin: 15px 0;
-      padding: 12px;
-      border-radius: 8px;
-      white-space: pre-line;
-    }
-
-    .feedback.correct {
-      background: #e4f6e9;
-      color: #176534;
-    }
-
-    .feedback.incorrect {
-      background: #fde8e7;
-      color: #a21c16;
-    }
-
-    .hidden { display: none !important; }
-
-    .word-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .word-list li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-    }
-
-    .word-text {
-      overflow-wrap: anywhere;
-      min-width: 0;
-    }
-
-    .delete-button {
-      background: #b42318;
-      padding: 7px 10px;
-      font-size: 13px;
-      flex-shrink: 0;
-    }
-
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .button-row button { flex: 1; }
-
-    @media (max-width: 520px) {
-      body { padding: 12px; }
-      .panel { padding: 15px; }
-      .boxes { grid-template-columns: 1fr; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Englannin sanasto</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;max-width:820px;margin:auto;padding:20px;background:#f3f5f8;color:#222}
+.panel{background:white;padding:20px;margin-bottom:20px;border-radius:12px;box-shadow:0 3px 10px #0000000c}
+input{display:block;width:100%;padding:11px;margin:8px 0 14px;border:1px solid #ccc;border-radius:7px;font:inherit}
+button{padding:11px 14px;border:0;border-radius:7px;background:#2858bd;color:white;font:inherit;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+.boxes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.box-card{padding:15px;border:2px solid #ddd;border-radius:10px;min-width:0}
+.box-card.selected{border-color:#2858bd;box-shadow:0 0 0 2px #2858bd20}
+.box-card h3{margin-top:0}
+.box-card button{width:100%}
+.box-1{background:#eef4ff}.box-2{background:#eaf6ed}.box-3{background:#fff3df}.box-4{background:#f3eaff}
+.muted{color:#667085;font-size:14px}
+.quiz-word{margin:22px 0;font-size:30px;font-weight:bold;overflow-wrap:anywhere}
+.feedback{margin:15px 0;padding:12px;border-radius:8px;white-space:pre-line}
+.correct{background:#e4f6e9;color:#176534}.incorrect{background:#fde8e7;color:#a21c16}
+.hidden{display:none!important}
+.word-list{list-style:none;padding:0;margin:0}
+.word-list li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #eee}
+.word-text{overflow-wrap:anywhere;min-width:0}
+.delete-button{background:#b42318;padding:7px 10px;font-size:13px;flex-shrink:0}
+.button-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+@media(max-width:520px){body{padding:12px}.panel{padding:15px}.boxes{grid-template-columns:1fr}}
+</style>
 </head>
-
 <body>
-  <h1>Englannin sanasto</h1>
+<h1>Englannin sanasto</h1>
 
-  <!-- Uuden sanan lisääminen -->
-  <section class="panel">
-    <h2>Lisää uusi sana</h2>
+<section class="panel">
+<h2>Lisää uusi sana</h2>
+<form id="wordForm">
+<label for="englishInput">Englanniksi</label>
+<input id="englishInput" required placeholder="Englanninkielinen sana">
+<label for="finnishInput">Suomeksi</label>
+<input id="finnishInput" required placeholder="Suomenkielinen käännös">
+<button type="submit">Lisää sana lokeroon 1</button>
+</form>
+<p id="storageMessage" class="muted">Sanasto tallennetaan selaimeen automaattisesti.</p>
+</section>
 
-    <form id="wordForm">
-      <label for="englishInput">Englanniksi</label>
-      <input
-        id="englishInput"
-        type="text"
-        placeholder="Kirjoita englanninkielinen sana"
-        required
-      >
+<section class="panel">
+<h2>Sanastolokerot</h2>
+<p>Valitse laatikko, jonka sanoja haluat harjoitella.</p>
+<div class="boxes">
+<div class="box-card box-1" id="boxCard1"><h3>Lokero 1</h3><p id="count1">0 sanaa</p><button type="button" data-box="1">Harjoittele lokeroa 1</button></div>
+<div class="box-card box-2" id="boxCard2"><h3>Lokero 2</h3><p id="count2">0 sanaa</p><button type="button" data-box="2">Harjoittele lokeroa 2</button></div>
+<div class="box-card box-3" id="boxCard3"><h3>Lokero 3</h3><p id="count3">0 sanaa</p><button type="button" data-box="3">Harjoittele lokeroa 3</button></div>
+<div class="box-card box-4" id="boxCard4"><h3>Opitut</h3><p id="count4">0 sanaa</p><button type="button" data-box="4">Kertaa opittuja</button></div>
+</div>
+<p id="selectedBoxMessage">Valitse harjoiteltava lokero.</p>
+</section>
 
-      <label for="finnishInput">Suomeksi</label>
-      <input
-        id="finnishInput"
-        type="text"
-        placeholder="Kirjoita suomenkielinen käännös"
-        required
-      >
+<section class="panel hidden" id="practicePanel">
+<h2 id="practiceTitle">Harjoittelu</h2>
+<p id="quizInstructions"></p>
+<button id="startButton" type="button">Aloita harjoittelu</button>
+<div id="quizArea" class="hidden">
+<p id="questionProgress" class="muted"></p>
+<div id="questionWord" class="quiz-word"></div>
+<form id="answerForm">
+<label for="answerInput">Kirjoita englanninkielinen vastaus</label>
+<input id="answerInput" required autocomplete="off" placeholder="Englanninkielinen sana">
+<button id="checkButton" type="submit">Tarkista vastaus</button>
+</form>
+<div id="feedback" class="feedback hidden" aria-live="polite"></div>
+<div class="button-row">
+<button id="nextButton" class="hidden" type="button">Seuraava sana</button>
+<button id="stopButton" type="button">Lopeta harjoittelu</button>
+</div>
+</div>
+<div id="resultArea" class="hidden">
+<h3>Harjoittelu päättyi</h3>
+<p id="resultText"></p>
+<button id="retryButton" type="button">Harjoittele uudelleen</button>
+</div>
+</section>
 
-      <button type="submit">Lisää sana lokeroon 1</button>
-    </form>
+<section class="panel">
+<h2>Sanat lokeroittain</h2>
+<h3>Lokero 1</h3><ul id="list1" class="word-list"></ul>
+<h3>Lokero 2</h3><ul id="list2" class="word-list"></ul>
+<h3>Lokero 3</h3><ul id="list3" class="word-list"></ul>
+<h3>Opitut</h3><ul id="list4" class="word-list"></ul>
+</section>
 
-    <p id="storageMessage" class="muted" aria-live="polite">
-      Sanasto tallennetaan selaimeen automaattisesti.
-    </p>
-  </section>
+<script>
+"use strict";
 
-  <!-- Neljä värikästä lokeroa. Näistä valitaan harjoiteltava lokero. -->
-  <section class="panel">
-    <h2>Sanastolokerot</h2>
-    <p>Valitse laatikko, jonka sanoja haluat harjoitella.</p>
+const STORAGE_KEY = "sanastoAppWords";
+let words = [];
+let selectedBox = null;
+let quizQueue = [];
+let quizIndex = 0;
+let currentWord = null;
+let answered = false;
+let correctAnswers = 0;
+let totalAnswers = 0;
 
-    <div class="boxes">
-      <div class="box-card box-1" id="boxCard1">
-        <h3>Lokero 1</h3>
-        <div class="box-count" id="count1">0 sanaa</div>
-        <button type="button" onclick="selectBox(1)">
-          Harjoittele lokeroa 1
-        </button>
-      </div>
+const $ = id => document.getElementById(id);
 
-      <div class="box-card box-2" id="boxCard2">
-        <h3>Lokero 2</h3>
-        <div class="box-count" id="count2">0 sanaa</div>
-        <button type="button" onclick="selectBox(2)">
-          Harjoittele lokeroa 2
-        </button>
-      </div>
+function createId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2);
+}
 
-      <div class="box-card box-3" id="boxCard3">
-        <h3>Lokero 3</h3>
-        <div class="box-count" id="count3">0 sanaa</div>
-        <button type="button" onclick="selectBox(3)">
-          Harjoittele lokeroa 3
-        </button>
-      </div>
+function saveWords() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(words));
+    $("storageMessage").textContent = "Sanasto tallennettu selaimeen.";
+    return true;
+  } catch (error) {
+    $("storageMessage").textContent = "Tallennus epäonnistui. Tarkista selaimen tallennustila.";
+    return false;
+  }
+}
 
-      <div class="box-card box-4" id="boxCard4">
-        <h3>Opitut</h3>
-        <div class="box-count" id="count4">0 sanaa</div>
-        <button type="button" onclick="selectBox(4)">
-          Kertaa opittuja
-        </button>
-      </div>
-    </div>
+function loadWords() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    if (!Array.isArray(saved)) throw new Error("Virheellinen sanasto");
 
-    <p id="selectedBoxMessage" aria-live="polite">
-      Valitse harjoiteltava lokero yllä olevista laatikoista.
-    </p>
-  </section>
+    words = saved
+      .filter(w => w && typeof w === "object")
+      .map(w => ({
+        id: w.id ? String(w.id) : createId(),
+        english: String(w.english ?? "").trim(),
+        finnish: String(w.finnish ?? "").trim(),
+        box: Number.isInteger(Number(w.box)) && Number(w.box) >= 1 && Number(w.box) <= 4
+          ? Number(w.box) : 1
+      }))
+      .filter(w => w.english && w.finnish);
 
-  <!-- Harjoittelu. Ei erillistä Sanakoe-laatikkoa eikä vetovalikkoa. -->
-  <section class="panel hidden" id="practicePanel">
-    <h2 id="practiceTitle">Harjoittelu</h2>
-    <p id="quizInstructions"></p>
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(words));
+  } catch (error) {
+    words = [];
+    $("storageMessage").textContent = "Tallennettua sanastoa ei voitu lukea.";
+  }
+  renderAll();
+}
 
-    <button id="startButton" type="button" onclick="startQuiz()" disabled>
-      Aloita harjoittelu
-    </button>
+function renderBoxes() {
+  for (let box = 1; box <= 4; box++) {
+    const count = words.filter(w => w.box === box).length;
+    $("count" + box).textContent = count + (count === 1 ? " sana" : " sanaa");
+    $("boxCard" + box).classList.toggle("selected", selectedBox === box);
+  }
+}
 
-    <div id="quizArea" class="hidden">
-      <p id="questionProgress" class="muted"></p>
-      <div id="questionWord" class="quiz-word"></div>
+function renderWordLists() {
+  for (let box = 1; box <= 4; box++) {
+    const list = $("list" + box);
+    list.replaceChildren();
+    const boxWords = words.filter(w => w.box === box);
 
-      <form id="answerForm">
-        <label for="answerInput">Kirjoita englanninkielinen sana</label>
-        <input
-          id="answerInput"
-          type="text"
-          placeholder="Englanninkielinen vastaus"
-          autocomplete="off"
-          required
-        >
-
-        <button id="checkButton" type="submit">
-          Tarkista vastaus
-        </button>
-      </form>
-
-      <div id="feedback" class="feedback hidden" aria-live="polite"></div>
-
-      <div class="button-row">
-        <button
-          id="nextButton"
-          type="button"
-          onclick="nextQuestion()"
-          class="hidden"
-        >
-          Seuraava sana
-        </button>
-
-        <button type="button" onclick="stopQuiz()">
-          Lopeta harjoittelu
-        </button>
-      </div>
-    </div>
-
-    <div id="resultArea" class="hidden">
-      <h3>Harjoittelu päättyi</h3>
-      <p id="resultText"></p>
-      <button type="button" onclick="startQuiz()">
-        Harjoittele uudelleen
-      </button>
-    </div>
-  </section>
-
-  <!-- Kaikkien sanojen listat -->
-  <section class="panel">
-    <h2>Sanat lokeroittain</h2>
-
-    <h3>Lokero 1</h3>
-    <ul id="list1" class="word-list"></ul>
-
-    <h3>Lokero 2</h3>
-    <ul id="list2" class="word-list"></ul>
-
-    <h3>Lokero 3</h3>
-    <ul id="list3" class="word-list"></ul>
-
-    <h3>Opitut</h3>
-    <ul id="list4" class="word-list"></ul>
-  </section>
-
-  <script>
-    const STORAGE_KEY = "sanastoAppWords";
-
-    let words = [];
-    let selectedBox = null;
-    let quizQueue = [];
-    let quizIndex = 0;
-    let currentWord = null;
-    let answered = false;
-    let correctAnswers = 0;
-    let totalAnswers = 0;
-
-    const $ = id => document.getElementById(id);
-
-    function createId() {
-      return Date.now().toString(36) +
-        Math.random().toString(36).slice(2);
+    if (boxWords.length === 0) {
+      const li = document.createElement("li");
+      li.className = "muted";
+      li.textContent = "Ei sanoja tässä lokerossa.";
+      list.appendChild(li);
+      continue;
     }
 
-    function loadWords() {
-      try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        const parsed = stored ? JSON.parse(stored) : [];
+    boxWords.forEach(word => {
+      const li = document.createElement("li");
+      const span = document.createElement("span");
+      span.className = "word-text";
+      span.textContent = word.english + " — " + word.finnish;
 
-        if (!Array.isArray(parsed)) {
-          throw new Error("Virheellinen sanasto");
-        }
+      const del = document.createElement("button");
+      del.type = "button";
+      del.className = "delete-button";
+      del.textContent = "Poista";
+      del.addEventListener("click", () => deleteWord(word.id));
 
-        words = parsed.map(word => ({
-          id: word.id || createId(),
-          english: String(word.english || ""),
-          finnish: String(word.finnish || ""),
-          box:
-            Number.isInteger(Number(word.box)) &&
-            Number(word.box) >= 1 &&
-            Number(word.box) <= 4
-              ? Number(word.box)
-              : 1
-        }));
-
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(words));
-
-        $("storageMessage").textContent =
-          "Sanasto tallennetaan tähän selaimeen automaattisesti.";
-      } catch (error) {
-        $("storageMessage").textContent =
-          "Sanaston lataus epäonnistui. Tarkista selaimen tallennustila.";
-        return;
-      }
-
-      renderAll();
-    }
-
-    function saveWords() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(words));
-        $("storageMessage").textContent = "Sanasto tallennettu selaimeen.";
-        return true;
-      } catch (error) {
-        $("storageMessage").textContent =
-          "Tallennus epäonnistui. Muutosta ei voitu tallentaa.";
-        return false;
-      }
-    }
-
-    function renderAll() {
-      renderBoxes();
-      renderWordLists();
-      updateSelectedBox();
-    }
-
-    function renderBoxes() {
-      for (let box = 1; box <= 4; box++) {
-        const count = words.filter(word => word.box === box).length;
-
-        $("count" + box).textContent =
-          count + (count === 1 ? " sana" : " sanaa");
-
-        $("boxCard" + box).classList.toggle(
-          "selected",
-          selectedBox === box
-        );
-      }
-    }
-
-    function renderWordLists() {
-      for (let box = 1; box <= 4; box++) {
-        const list = $("list" + box);
-        list.replaceChildren();
-
-        const boxWords = words.filter(word => word.box === box);
-
-        if (boxWords.length === 0) {
-          const item = document.createElement("li");
-          item.className = "muted";
-          item.textContent = "Ei sanoja tässä lokerossa.";
-          list.appendChild(item);
-          continue;
-        }
-
-        boxWords.forEach(word => {
-          const item = document.createElement("li");
-
-          const text = document.createElement("span");
-          text.className = "word-text";
-          text.textContent = word.english + " — " + word.finnish;
-
-          const button = document.createElement("button");
-          button.type = "button";
-          button.className = "delete-button";
-          button.textContent = "Poista";
-          button.addEventListener("click", () => deleteWord(word.id));
-
-          item.append(text, button);
-          list.appendChild(item);
-        });
-      }
-    }
-
-    function selectBox(box) {
-      stopQuiz(false);
-      selectedBox = box;
-
-      $("practicePanel").classList.remove("hidden");
-      $("quizArea").classList.add("hidden");
-      $("resultArea").classList.add("hidden");
-      $("startButton").classList.remove("hidden");
-
-      renderAll();
-    }
-
-    function updateSelectedBox() {
-      if (selectedBox === null) {
-        $("selectedBoxMessage").textContent =
-          "Valitse harjoiteltava lokero yllä olevista laatikoista.";
-
-        $("practicePanel").classList.add("hidden");
-        return;
-      }
-
-      const count = words.filter(word => word.box === selectedBox).length;
-      const name = selectedBox === 4 ? "Opitut" : "Lokero " + selectedBox;
-
-      $("selectedBoxMessage").textContent =
-        "Valittuna: " + name + ". Sanoja: " + count + ".";
-
-      $("practiceTitle").textContent = name + " – harjoittelu";
-
-      $("quizInstructions").textContent = count === 0
-        ? "Tässä lokerossa ei ole vielä sanoja."
-        : "Harjoittelet nyt: " + name + ". Sanoja: " + count + ".";
-
-      $("startButton").disabled = count === 0;
-    }
-
-    $("wordForm").addEventListener("submit", function(event) {
-      event.preventDefault();
-
-      const english = $("englishInput").value.trim();
-      const finnish = $("finnishInput").value.trim();
-
-      if (!english || !finnish) return;
-
-      const newWord = {
-        id: createId(),
-        english,
-        finnish,
-        box: 1
-      };
-
-      words.push(newWord);
-
-      if (!saveWords()) {
-        words.pop();
-        return;
-      }
-
-      $("englishInput").value = "";
-      $("finnishInput").value = "";
-
-      renderAll();
-      $("englishInput").focus();
+      li.append(span, del);
+      list.appendChild(li);
     });
+  }
+}
 
-    function deleteWord(id) {
-      const index = words.findIndex(word => word.id === id);
-      if (index === -1) return;
+function renderAll() {
+  renderBoxes();
+  renderWordLists();
+  updateSelectedBox();
+}
 
-      const deleted = words.splice(index, 1)[0];
+function updateSelectedBox() {
+  if (selectedBox === null) {
+    $("selectedBoxMessage").textContent = "Valitse harjoiteltava lokero.";
+    $("practicePanel").classList.add("hidden");
+    return;
+  }
 
-      if (!saveWords()) {
-        words.splice(index, 0, deleted);
-        renderAll();
-        return;
-      }
+  const count = words.filter(w => w.box === selectedBox).length;
+  const name = selectedBox === 4 ? "Opitut" : "Lokero " + selectedBox;
+  $("selectedBoxMessage").textContent = "Valittuna: " + name + ". Sanoja: " + count + ".";
+  $("practiceTitle").textContent = name + " – harjoittelu";
+  $("quizInstructions").textContent = count ? "Harjoittelet tämän lokeron sanoja." : "Tässä lokerossa ei ole sanoja.";
+  $("startButton").disabled = count === 0;
+}
 
-      renderAll();
+function stopQuiz() {
+  $("quizArea").classList.add("hidden");
+  $("resultArea").classList.add("hidden");
+  $("startButton").classList.remove("hidden");
+  quizQueue = [];
+  quizIndex = 0;
+  currentWord = null;
+  answered = false;
+  updateSelectedBox();
+}
 
-      if (
-        selectedBox !== null &&
-        !words.some(word => word.box === selectedBox)
-      ) {
-        stopQuiz();
-      }
+function selectBox(box) {
+  stopQuiz();
+  selectedBox = box;
+  $("practicePanel").classList.remove("hidden");
+  renderAll();
+}
+
+$("wordForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const english = $("englishInput").value.trim();
+  const finnish = $("finnishInput").value.trim();
+  if (!english || !finnish) return;
+
+  const word = { id: createId(), english, finnish, box: 1 };
+  words.push(word);
+
+  if (!saveWords()) {
+    words.pop();
+    return;
+  }
+
+  $("englishInput").value = "";
+  $("finnishInput").value = "";
+  renderAll();
+  $("englishInput").focus();
+});
+
+function deleteWord(id) {
+  const index = words.findIndex(w => w.id === id);
+  if (index < 0) return;
+
+  const removed = words.splice(index, 1)[0];
+  if (!saveWords()) {
+    words.splice(index, 0, removed);
+    renderAll();
+    return;
+  }
+
+  if (currentWord && currentWord.id === id) stopQuiz();
+  renderAll();
+}
+
+function shuffle(array) {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+function startQuiz() {
+  if (selectedBox === null) return;
+  const selected = words.filter(w => w.box === selectedBox);
+  if (!selected.length) {
+    renderAll();
+    return;
+  }
+
+  quizQueue = shuffle(selected.map(w => w.id));
+  quizIndex = 0;
+  correctAnswers = 0;
+  totalAnswers = 0;
+  $("quizArea").classList.remove("hidden");
+  $("resultArea").classList.add("hidden");
+  $("startButton").classList.add("hidden");
+  showQuestion();
+}
+
+function showQuestion() {
+  currentWord = null;
+
+  while (quizIndex < quizQueue.length) {
+    const candidate = words.find(w => w.id === quizQueue[quizIndex]);
+    if (candidate && candidate.box === selectedBox) {
+      currentWord = candidate;
+      break;
     }
+    quizIndex++;
+  }
 
-    function shuffle(array) {
-      const result = [...array];
+  if (!currentWord) {
+    finishQuiz();
+    return;
+  }
 
-      for (let i = result.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [result[i], result[j]] = [result[j], result[i]];
-      }
+  answered = false;
+  $("questionProgress").textContent = "Sana " + (quizIndex + 1) + " / " + quizQueue.length;
+  $("questionWord").textContent = currentWord.finnish;
+  $("answerInput").value = "";
+  $("answerInput").disabled = false;
+  $("checkButton").disabled = false;
+  $("feedback").className = "feedback hidden";
+  $("feedback").textContent = "";
+  $("nextButton").classList.add("hidden");
+  $("answerInput").focus();
+}
 
-      return result;
-    }
+$("answerForm").addEventListener("submit", event => {
+  event.preventDefault();
+  checkAnswer();
+});
 
-    function startQuiz() {
-      if (selectedBox === null) return;
-
-      const selectedWords = words.filter(
-        word => word.box === selectedBox
-      );
-
-      if (selectedWords.length === 0) {
-        updateSelectedBox();
-        return;
-      }
-
-      quizQueue = shuffle(selectedWords.map(word => word.id));
-      quizIndex = 0;
-      currentWord = null;
-      answered = false;
-      correctAnswers = 0;
-      totalAnswers = 0;
-
-      $("quizArea").classList.remove("hidden");
-      $("resultArea").classList.add("hidden");
-      $("startButton").classList.add("hidden");
-
-      showQuestion();
-    }
-
-    function showQuestion() {
-      if (quizIndex >= quizQueue.length) {
-        finishQuiz();
-        return;
-      }
-
-      currentWord = words.find(
-        word => word.id === quizQueue[quizIndex]
-      );
-
-      if (!currentWord || currentWord.box !== selectedBox) {
-        quizIndex++;
-        showQuestion();
-        return;
-      }
-
-      answered = false;
-
-      $("questionProgress").textContent =
-        "Sana " + (quizIndex + 1) + " / " + quizQueue.length;
-
-      $("questionWord").textContent = currentWord.finnish;
-      $("answerInput").value = "";
-      $("answerInput").disabled = false;
-      $("checkButton").disabled = false;
-      $("feedback").className = "feedback hidden";
-      $("nextButton").classList.add("hidden");
-      $("answerInput").focus();
-    }
-
-    $("answerForm").addEventListener("submit", function(event) {
-      event.preventDefault();
-      checkAnswer();
-    });
-
-   
 function checkAnswer() {
   if (answered || !currentWord) return;
 
-    const answer = $("answerInput").value.trim().toLowerCase();
-    if (!answer) return;
+  const answer = $("answerInput").value.trim().toLocaleLowerCase("en");
+  if (!answer) return;
 
-    answered = true;
-    totalAnswers++;
+  answered = true;
+  totalAnswers++;
 
-    const feedback = $("feedback");
-    feedback.className = "feedback";
-    if (answer === currentWord.english.trim().toLowerCase()) {
-      correctAnswers++;
-      feedback.classList.add("correct");
-      feedback.textContent =
-        "Oikein!\n" + currentWord.finnish + " = " + currentWord.english;
-    } else {
-      feedback.classList.add("incorrect");
-      feedback.textContent =
+  const previousBox = currentWord.box;
+  const correct = answer === currentWord.english.trim().toLocaleLowerCase("en");
+  const feedback = $("feedback");
+  feedback.className = "feedback";
 
-    // Oikea vastaus siirtää sanan yhden lokeron eteenpäin.
-    // Opitut-sanat pysyvät aina Opitut-lokerossa.
+  if (correct) {
+    correctAnswers++;
+    feedback.classList.add("correct");
+    feedback.textContent = "Oikein!\n" + currentWord.finnish + " = " + currentWord.english;
+
+    // Oikea vastaus: lokero 1 -> 2 -> 3 -> Opitut.
     if (currentWord.box >= 1 && currentWord.box <= 3) {
       currentWord.box++;
     }
   } else {
     feedback.classList.add("incorrect");
-    feedback.textContent =
-      "Väärin.\nOikea vastaus: " + currentWord.english;
+    feedback.textContent = "Väärin.\nOikea vastaus: " + currentWord.english;
 
-    // Väärä vastaus siirtää sanan yhden lokeron taaksepäin.
-    // Lokerossa 1 ja Opitut-lokerossa sanat eivät siirry.
-    if (currentWord.box === 2) {
-      currentWord.box = 1;
-    } else if (currentWord.box === 3) {
-      currentWord.box = 2;
-    }
+    // Väärä vastaus: lokero 3 -> 2 -> 1.
+    // Lokero 1 ja Opitut eivät siirry väärästä vastauksesta.
+    if (currentWord.box === 3) currentWord.box = 2;
+    else if (currentWord.box === 2) currentWord.box = 1;
   }
 
-  // Päivitä lokerot ja sanalistat heti.
   if (!saveWords()) {
-    // Jos tallennus epäonnistuu, palauta alkuperäinen lokero.
     currentWord.box = previousBox;
-    feedback.textContent +=
-      "\nVaroitus: lokeromuutosta ei voitu tallentaa.";
+    feedback.textContent += "\nLokeromuutosta ei voitu tallentaa.";
   }
 
   renderAll();
-
   $("answerInput").disabled = true;
   $("checkButton").disabled = true;
   $("nextButton").classList.remove("hidden");
 }
 
+function nextQuestion() {
+  if (!answered) return;
+  quizIndex++;
+  showQuestion();
+}
 
-      const answer = $("answerInput").value.trim().toLowerCase();
-      if (!answer) return;
+function finishQuiz() {
+  $("quizArea").classList.add("hidden");
+  $("resultArea").classList.remove("hidden");
+  $("startButton").classList.remove("hidden");
 
-      answered = true;
-      totalAnswers++;
+  const percent = totalAnswers ? Math.round(correctAnswers / totalAnswers * 100) : 0;
+  $("resultText").textContent = "Kysytyt sanat: " + totalAnswers +
+    ". Oikein: " + correctAnswers + ". Oikeinprosentti: " + percent + "%.";
 
-      const feedback = $("feedback");
-      feedback.className = "feedback";
+  renderAll();
+}
 
-      if (answer === currentWord.english.trim().toLowerCase()) {
-        correctAnswers++;
-        feedback.classList.add("correct");
-        feedback.textContent =
-          "Oikein!\n" + currentWord.finnish + " = " + currentWord.english;
-      } else {
-        feedback.classList.add("incorrect");
-        feedback.textContent =
-          "Väärin.\nOikea vastaus: " + currentWord.english;
-      }
+$("startButton").addEventListener("click", startQuiz);
+$("nextButton").addEventListener("click", nextQuestion);
+$("stopButton").addEventListener("click", stopQuiz);
+$("retryButton").addEventListener("click", startQuiz);
 
-      $("answerInput").disabled = true;
-      $("checkButton").disabled = true;
-      $("nextButton").classList.remove("hidden");
-    }
+document.querySelectorAll("[data-box]").forEach(button => {
+  button.addEventListener("click", () => selectBox(Number(button.dataset.box)));
+});
 
-    function nextQuestion() {
-      if (!answered) return;
-
-      quizIndex++;
-      showQuestion();
-    }
-
-    function finishQuiz() {
-      $("quizArea").classList.add("hidden");
-      $("resultArea").classList.remove("hidden");
-      $("startButton").classList.remove("hidden");
-
-      const percent = totalAnswers
-        ? Math.round(correctAnswers / totalAnswers * 100)
-        : 0;
-
-      $("resultText").textContent =
-        "Kysytyt sanat: " + totalAnswers +
-        ". Oikein: " + correctAnswers +
-        ". Oikeinprosentti: " + percent + "%.";
-
-      renderAll();
-    }
-
-    function stopQuiz(updateSelection = true) {
-      $("quizArea").classList.add("hidden");
-      $("resultArea").classList.add("hidden");
-      $("startButton").classList.remove("hidden");
-
-      quizQueue = [];
-      quizIndex = 0;
-      currentWord = null;
-      answered = false;
-
-      if (updateSelection) {
-        updateSelectedBox();
-      }
-    }
-
-    loadWords();
-  </script>
+loadWords();
+</script>
 </body>
 </html>
