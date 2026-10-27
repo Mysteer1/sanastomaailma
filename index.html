@@ -3,38 +3,85 @@
 <html lang="fi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sanasto – Englanti & Suomi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 650px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background: #f5f7fb;
+      color: #172033;
+    }
+    h1 { color: #2457c5; }
+    input, select, button {
+      box-sizing: border-box;
+      padding: 12px;
+      margin: 5px 0;
+      border-radius: 8px;
+      border: 1px solid #ccd3df;
+      font-size: 16px;
+    }
+    input { width: 100%; }
+    button {
+      background: #2457c5;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+    li { margin: 10px 0; }
+  </style>
 </head>
 <body>
   <h1>Sanasto</h1>
-  <p>Harjoittele englannin ja suomen sanoja.</p>
+  <p>Opiskele englantia ja suomea.</p>
 
-  <label for="word">Syötä sana:</label>
-  <input id="word" type="text" placeholder="Esim. absorbing">
+  <div class="card">
+    <h2>Lisää uusi sana</h2>
+    <label for="english">Englanninkielinen sana</label>
+    <input id="english" placeholder="Esim. absorbing">
 
-  <button id="addWord">Lisää sana</button>
+    <label for="finnish">Suomenkielinen vastine</label>
+    <input id="finnish" placeholder="Esim. kiehtova">
 
-  <h2>Sanastosi</h2>
-  <ul id="wordList"></ul>
+    <button id="addWord">Lisää sanastoon</button>
+    <p id="message"></p>
+  </div>
+
+  <div class="card">
+    <h2>Oma sanastosi</h2>
+    <ul id="wordList"></ul>
+  </div>
 
   <script>
     const words = [];
 
     document.getElementById("addWord").addEventListener("click", () => {
-      const input = document.getElementById("word");
-      const word = input.value.trim();
+      const english = document.getElementById("english").value.trim();
+      const finnish = document.getElementById("finnish").value.trim();
+      const message = document.getElementById("message");
 
-      if (!word) return;
+      if (!english || !finnish) {
+        message.textContent = "Täytä molemmat kentät.";
+        return;
+      }
 
-      words.push(word);
+      words.push({ english, finnish });
 
       const item = document.createElement("li");
-      item.textContent = word;
+      item.textContent = english + " – " + finnish;
       document.getElementById("wordList").appendChild(item);
 
-      input.value = "";
-      input.focus();
+      document.getElementById("english").value = "";
+      document.getElementById("finnish").value = "";
+      message.textContent = "Sana lisätty!";
     });
   </script>
 </body>
