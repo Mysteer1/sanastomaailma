@@ -221,11 +221,19 @@ input[type="text"] {
 }
 .practice-panel {
   margin-top: 16px;
-  display: grid;
-  grid-template-columns: minmax(250px, .7fr) minmax(0, 1.4fr);
-  gap: 18px;
-  align-items: center;
+  display: block;
+  width: 100%;
+  padding: 0;
   scroll-margin-top: 12px;
+}
+
+.practice-heading {
+  display: none;
+}
+
+.practice-art {
+  width: 100%;
+  margin: 0;
 }
 .practice-heading { padding: 8px; }
 .practice-heading h2 { font-size: 25px; }
