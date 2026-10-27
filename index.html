@@ -4,84 +4,171 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sanasto – Englanti & Suomi</title>
+  <title>Sanasto – Englanti ja suomi</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       max-width: 650px;
       margin: 40px auto;
-      padding: 0 20px;
-      background: #f5f7fb;
-      color: #172033;
+      padding: 20px;
+      background: #f4f6fa;
+      color: #202938;
     }
     h1 { color: #2457c5; }
-    input, select, button {
-      box-sizing: border-box;
-      padding: 12px;
-      margin: 5px 0;
-      border-radius: 8px;
-      border: 1px solid #ccd3df;
-      font-size: 16px;
-    }
-    input { width: 100%; }
-    button {
-      background: #2457c5;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
     .card {
       background: white;
       padding: 20px;
       border-radius: 12px;
       margin: 20px 0;
     }
-    li { margin: 10px 0; }
+    input, button {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    input { border: 1px solid #ccd3df; }
+    button {
+      background: #2457c5;
+      color: white;
+      border: 0;
+      cursor: pointer;
+    }
+    li { margin: 12px 0; }
+    .muted { color: #657084; font-size: 14px; }
+    #message { white-space: pre-wrap; }
   </style>
 </head>
 <body>
   <h1>Sanasto</h1>
-  <p>Opiskele englantia ja suomea.</p>
+  <p>Syötä sana suomeksi tai englanniksi.</p>
 
   <div class="card">
-    <h2>Lisää uusi sana</h2>
-    <label for="english">Englanninkielinen sana</label>
-    <input id="english" placeholder="Esim. absorbing">
-
-    <label for="finnish">Suomenkielinen vastine</label>
-    <input id="finnish" placeholder="Esim. kiehtova">
-
-    <button id="addWord">Lisää sanastoon</button>
-    <p id="message"></p>
+    <h2>Lisää sana</h2>
+    <input id="word" placeholder="Esim. dog tai koira">
+    <button id="addWord">Käännä ja lisää</button>
+    <p id="message" role="status"></p>
+    <p class="muted">Käännös tehdään LibreTranslate-palvelulla.</p>
   </div>
 
   <div class="card">
-    <h2>Oma sanastosi</h2>
+    <h2>Sanastosi</h2>
     <ul id="wordList"></ul>
   </div>
 
   <script>
     const words = [];
 
-    document.getElementById("addWord").addEventListener("click", () => {
-      const english = document.getElementById("english").value.trim();
-      const finnish = document.getElementById("finnish").value.trim();
-      const message = document.getElementById("message");
+    const input = document.getElementById("word");
+    const button = document.getElementById("addWord");
+    const message = document.getElementById("message");
+    const list = document.getElementById("wordList");
 
-      if (!english || !finnish) {
-        message.textContent = "Täytä molemmat kentät.";
+    async function translateWord(word, target) {
+      const response = await fetch(
+        "https://libretranslate.com/translate",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            q: word,
+            source: "auto",
+            target: target,
+            format: "text",
+            alternatives: 3
+          })
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Käännöspalvelu palautti virheen (" +
+          response.status + ").");
+      }
+
+      const data = await response.json();
+
+      if (!data.translatedText) {
+        throw new Error("Käännöstä ei saatu.");
+      }
+
+      return data.translatedText;
+    }
+
+    button.addEventListener("click", async () => {
+      const word = input.value.trim();
+
+      if (!word) {
+        message.textContent = "Kirjoita ensin sana.";
         return;
       }
 
-      words.push({ english, finnish });
+      button.disabled = true;
+      message.textContent = "Käännetään sanaa...";
 
-      const item = document.createElement("li");
-      item.textContent = english + " – " + finnish;
-      document.getElementById("wordList").appendChild(item);
+      try {
+        // Selvitetään, onko syöte suomea vai englantia.
+        const detected = await fetch(
+          "https://libretranslate.com/detect",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ q: word })
+          }
+        );
 
-      document.getElementById("english").value = "";
-      document.getElementById("finnish").value = "";
-      message.textContent = "Sana lisätty!";
+        if (!detected.ok) {
+          throw new Error("Kielen tunnistus epäonnistui (" +
+            detected.status + ").");
+        }
+
+        const languages = await detected.json();
+        const language = languages[0]?.language;
+
+        if (language !== "en" && language !== "fi") {
+          throw new Error(
+            "Tunnistin kielen muuksi kuin suomeksi tai englanniksi. " +
+            "Kokeile kirjoittaa sana uudelleen."
+          );
+        }
+
+        const target = language === "en" ? "fi" : "en";
+        const translation = await translateWord(word, target);
+
+        words.push({
+          original: word,
+          translation: translation,
+          language: language
+        });
+
+        const item = document.createElement("li");
+        const strong = document.createElement("strong");
+        strong.textContent = word;
+        const detail = document.createElement("span");
+        detail.textContent = " → " + translation;
+
+        item.append(strong, detail);
+        list.appendChild(item);
+
+        input.value = "";
+        message.textContent = "Käännös lisätty sanastoon!";
+      } catch (error) {
+        message.textContent =
+          "Käännös ei onnistunut.\n" +
+          error.message +
+          "\nKokeile hetken kuluttua uudelleen.";
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    input.addEventListener("keydown", event => {
+      if (event.key === "Enter") button.click();
     });
   </script>
 </body>
