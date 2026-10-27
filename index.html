@@ -591,8 +591,63 @@
       checkAnswer();
     });
 
-    function checkAnswer() {
-      if (answered || !currentWord) return;
+   
+function checkAnswer() {
+  if (answered || !currentWord) return;
+
+  const answer = $("answerInput").value.trim().toLowerCase();
+  if (!answer) return;
+
+  answered = true;
+  totalAnswers++;
+
+  const feedback = $("feedback");
+  feedback.className = "feedback";
+
+  const previousBox = currentWord.box;
+  const isCorrect =
+    answer === currentWord.english.trim().toLowerCase();
+
+  if (isCorrect) {
+    correctAnswers++;
+    feedback.classList.add("correct");
+    feedback.textContent =
+      "Oikein!\n" + currentWord.finnish + " = " + currentWord.english;
+
+    // Oikea vastaus siirtää sanan yhden lokeron eteenpäin.
+    // Opitut-sanat pysyvät aina Opitut-lokerossa.
+    if (currentWord.box >= 1 && currentWord.box <= 3) {
+      currentWord.box++;
+    }
+  } else {
+    feedback.classList.add("incorrect");
+    feedback.textContent =
+      "Väärin.\nOikea vastaus: " + currentWord.english;
+
+    // Väärä vastaus siirtää sanan yhden lokeron taaksepäin.
+    // Lokerossa 1 ja Opitut-lokerossa sanat eivät siirry.
+    if (currentWord.box === 2) {
+      currentWord.box = 1;
+    } else if (currentWord.box === 3) {
+      currentWord.box = 2;
+    }
+  }
+
+  // Päivitä lokerot ja sanalistat heti.
+  if (!saveWords()) {
+    // Jos tallennus epäonnistuu, palauta alkuperäinen lokero.
+    currentWord.box = previousBox;
+    feedback.textContent +=
+      "\nVaroitus: lokeromuutosta ei voitu tallentaa.";
+  }
+
+  renderAll();
+
+  $("answerInput").disabled = true;
+  $("checkButton").disabled = true;
+  $("nextButton").classList.remove("hidden");
+}
+
 
       const answer = $("answerInput").value.trim().toLowerCase();
       if (!answer) return;
